@@ -1,7 +1,7 @@
 import * as log from "./log";
 
 import { LOGGER } from "./log";
-import { runScript, runScriptSync, runParallelScript } from "./scriptLoader";
+import { runScript, runScriptSync, runParallelScript, runNpm } from "./scriptLoader";
 
 export
 {
@@ -9,5 +9,6 @@ export
     LOGGER,
     runScript,
     runScriptSync,
-    runParallelScript
+    runParallelScript,
+    runNpm
 };

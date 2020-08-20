@@ -1,4 +1,4 @@
-import { fork } from "child_process";
+import { fork, exec } from "child_process";
 import * as path from "path";
 
 const REGEX_EXTENSION_TEST = /.js$/;
@@ -35,7 +35,7 @@ export async function runScript(scriptPath: string, ...args: any[]): Promise<any
     return runScriptSync(scriptPath, ...args);
 }
 
-export async function runParallelScript(scriptPath: string, ...args: any[]): Promise<any>
+export function runParallelScript(scriptPath: string, ...args: any[]): Promise<any>
 {
     return new Promise<any>((resolve, reject) =>
     {
@@ -63,6 +63,26 @@ export async function runParallelScript(scriptPath: string, ...args: any[]): Pro
         child.send({
             scriptPath: filePath,
             args: args
+        });
+    });
+}
+
+export function runNpm(scriptName: string, npmRoot?: string): Promise<void>
+{
+    return new Promise<void>((resolve, reject) =>
+    {
+        const cwd = npmRoot
+            ? npmRoot
+            : process.cwd();
+        exec(`npm run ${scriptName}`, {
+            cwd: cwd
+        }, (error) =>
+        {
+            if (error)
+            {
+                reject(error);
+            }
+            resolve();
         });
     });
 }
