@@ -1,9 +1,12 @@
 {
-  "name": "nodebuildutilities",
+  "name": "nodebuildutil",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
   "types": "lib",
+  "bin": {
+    "uscript": "./lib/buildScript.js"
+  },
   "scripts": {
     "build": "tsc -p ."
   },
