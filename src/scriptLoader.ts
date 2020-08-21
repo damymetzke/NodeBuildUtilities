@@ -1,13 +1,28 @@
 import { fork, exec } from "child_process";
 import * as path from "path";
 
-const REGEX_EXTENSION_TEST = /.js$/;
+const REGEX_NAMESPACE_SCRIPT = /^(\w+):([^ \n\t]+)$/;
+const REGEX_ADD_EXTENSION = /^([^ \n\t]+?)(?:.js)?$/;
+
+function parseScript(script: string): string
+{
+    return script
+        .replace(REGEX_NAMESPACE_SCRIPT, (_match, namespace, scriptPath) => //parse namespaces
+        {
+            switch (namespace)
+            {
+                case "std":
+                    return path.join(__dirname, "std", scriptPath);
+                default:
+                    return scriptPath;
+            }
+        })
+        .replace(REGEX_ADD_EXTENSION, (_match, scriptPath) => `${scriptPath}.js`); //add js if it doesn't exist
+}
 
 export function runScriptSync(scriptPath: string, ...args: any[]): any
 {
-    const filePath = REGEX_EXTENSION_TEST.test(scriptPath)
-        ? scriptPath
-        : `${scriptPath}.js`;
+    const filePath = parseScript(scriptPath);
 
     let scriptMain;
     try
@@ -39,9 +54,7 @@ export function runParallelScript(scriptPath: string, ...args: any[]): Promise<a
 {
     return new Promise<any>((resolve, reject) =>
     {
-        const filePath = REGEX_EXTENSION_TEST.test(scriptPath)
-            ? scriptPath
-            : `${scriptPath}.js`;
+        const filePath = parseScript(scriptPath);
 
         const child = fork(path.join(__dirname, "parallelScriptLoader.js"));
 
