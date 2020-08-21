@@ -6,7 +6,7 @@ if (!process.send)
     process.exit(1);
 }
 
-process.once("message", (data: { scriptPath: string; args: any[]; }) =>
+process.once("message", async (data: { scriptPath: string; args: any[]; }) =>
 {
     const { scriptPath, args } = data;
     const script = require(scriptPath);
@@ -36,12 +36,35 @@ process.once("message", (data: { scriptPath: string; args: any[]; }) =>
         return;
     }
 
-    const result = script.scriptMain(...args);
-    if (process.send)
+    try
     {
-        process.send({
-            type: "resolve",
-            result: result
-        });
+        const result = script.scriptMain(...args);
+        if (process.send)
+        {
+            if (!(result instanceof Promise))
+            {
+                process.send({
+                    type: "resolve",
+                    result: result
+                });
+            }
+
+            const resolvedResult = await result;
+            process.send({
+                type: "resolve",
+                result: resolvedResult
+            });
+
+        }
+    }
+    catch (error)
+    {
+        if (process.send)
+        {
+            process.send({
+                type: "reject",
+                message: String(error)
+            });
+        }
     }
 });
