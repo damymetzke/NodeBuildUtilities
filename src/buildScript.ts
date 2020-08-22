@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { LOGGER } from "./log";
 import * as path from "path";
 import { parse } from "./clParser";
