@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib",
   "bin": {
-    "uscript": "./lib/buildScript.js"
+    "b-script": "./lib/buildScript.js"
   },
   "scripts": {
     "build": "tsc -p ."
