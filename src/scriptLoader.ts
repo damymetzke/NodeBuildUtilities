@@ -1,5 +1,6 @@
 import { fork, exec } from "child_process";
 import * as path from "path";
+import { LOGGER } from "./log";
 
 const REGEX_NAMESPACE_SCRIPT = /^(\w+):([^ \n\t]+)$/;
 const REGEX_ADD_EXTENSION = /^([^ \n\t]+?)(?:.js)?$/;
@@ -144,4 +145,20 @@ export function runBin(program: string, args: string[], options: Partial<ShellOp
     return runShell(`${
         path.join("node_modules/.bin", program)
         }`, args, options);
+}
+
+export async function runBuildScript(script: string): Promise<any>
+{
+    const buildscriptfile = require(path.join(process.cwd(), "buildscript.config.js"));
+    if (!("buildScripts" in buildscriptfile) || !(script in buildscriptfile.buildScripts))
+    {
+        throw `script '${script}' not found!`;
+    }
+
+    return buildscriptfile.buildScripts[ script ]();
+}
+
+export function runBuildScriptParallel(script: string): Promise<void>
+{
+    return runShell("node", [ path.join(__dirname, "buildScript.js"), script ], {});
 }
