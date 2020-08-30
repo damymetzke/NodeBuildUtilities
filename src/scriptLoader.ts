@@ -99,3 +99,49 @@ export function runNpm(scriptName: string, npmRoot?: string): Promise<void>
         });
     });
 }
+
+export type ShellOptions =
+    {
+        cwd: string;
+    };
+
+export function runShell(program: string, args: string[], options: Partial<ShellOptions>): Promise<void>
+{
+    //build default inside function in case the cwd changes
+    const defaultShellOptions: ShellOptions = {
+        cwd: process.cwd()
+    };
+
+    const resultingOptions = {
+        ...defaultShellOptions,
+        ...options
+    };
+
+    return new Promise<void>(
+        (resolve, reject) =>
+        {
+            exec(
+                `${program}${args.reduce((total, current) => `${total} "${current}"`, "")}`,
+                {
+                    cwd: resultingOptions.cwd
+                },
+                (error) =>
+                {
+                    if (error)
+                    {
+                        reject(error);
+                    }
+
+                    resolve();
+                }
+            );
+        }
+    );
+}
+
+export function runBin(program: string, args: string[], options: Partial<ShellOptions>): Promise<void>
+{
+    return runShell(`${
+        path.join("node_modules/.bin", program)
+        }`, args, options);
+}
