@@ -1,5 +1,8 @@
+import { walk } from "./fileSystem/walk";
+
 import { scriptMain as copyFolder } from "./fileSystem/copyFolder";
 
 export const fileSystem = {
-    copyFolder: copyFolder
+    walk,
+    copyFolder
 };
