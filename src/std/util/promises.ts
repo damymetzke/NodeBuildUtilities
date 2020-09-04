@@ -1,3 +1,5 @@
+import { promises } from "fs";
+
 /**
  * takes a promise and turns the resolve state into a boolean.
  * 
@@ -18,3 +20,20 @@ export function promiseResolves(promise: Promise<any>): Promise<boolean>
             });
     });
 }
+
+/**
+ * just resolves the promise, but uses a default value in case of a rejection.
+ * 
+ * @param defaultValue used if promise rejects
+ */
+export async function promiseResolveOrDefault<T>(promise: Promise<T>, defaultValue: T): Promise<T>
+{
+    try
+    {
+        return await promise;
+    }
+    catch
+    {
+        return defaultValue;
+    }
+} 

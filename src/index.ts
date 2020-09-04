@@ -11,6 +11,8 @@ import
 } from "./scriptLoader";
 import { parse, clParsed } from "./clParser";
 
+import { config } from "./config";
+
 
 export
 {
@@ -27,5 +29,6 @@ export
     runBuildScript,
     runBuildScriptParallel,
     parse,
-    clParsed
+    clParsed,
+    config
 };
