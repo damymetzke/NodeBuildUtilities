@@ -1,2 +1,7 @@
 export { promiseResolves, promiseResolveOrDefault } from './promises';
-export { jsonToYaml, yamlToJson } from './yaml';
+export {
+  jsonToYaml,
+  yamlToJson,
+  yamlToJsonFile,
+  jsonToYamlFile,
+} from './yaml';
