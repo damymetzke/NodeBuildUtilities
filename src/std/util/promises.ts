@@ -1,5 +1,3 @@
-import { promises } from "fs";
-
 /**
  * takes a promise and turns the resolve state into a boolean.
  * 
