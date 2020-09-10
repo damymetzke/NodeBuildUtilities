@@ -1,1 +1,1 @@
-export {promiseResolves, promiseResolveOrDefault} from "./promises"
+export { promiseResolves, promiseResolveOrDefault } from './promises';
