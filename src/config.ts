@@ -1,7 +1,9 @@
 import { promises as fs } from "fs";
-import { promiseResolveOrDefault } from "./std/util/promises";
+import { util} from "./index";
 import { LOGGER } from "./log";
 import * as _ from "lodash";
+
+const {promiseResolveOrDefault} = util;
 
 let configData: ConfigObject = {};
 

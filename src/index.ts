@@ -1,4 +1,5 @@
-export * as stdLib from "./std";
+export * as fileSystem from "./fileSystem";
+export * as util from "./util";
 export * as log from "./log";
 export { LOGGER } from "./log";
 export

@@ -1,6 +1,5 @@
 import { fork, exec } from "child_process";
 import * as path from "path";
-import { LOGGER } from "./log";
 
 const REGEX_NAMESPACE_SCRIPT = /^(\w+):([^ \n\t]+)$/;
 const REGEX_ADD_EXTENSION = /^([^ \n\t]+?)(?:.js)?$/;
@@ -13,7 +12,7 @@ function parseScript(script: string): string
             switch (namespace)
             {
                 case "std":
-                    return path.join(__dirname, "std", scriptPath);
+                    return path.join(__dirname, scriptPath);
                 default:
                     return scriptPath;
             }
