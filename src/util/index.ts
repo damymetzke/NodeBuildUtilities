@@ -6,4 +6,5 @@ export {
   yamlToJsonFile,
   jsonToYamlFile,
   parseYamlOrJson,
+  stringyfyJsonOrYaml,
 } from './yaml';
