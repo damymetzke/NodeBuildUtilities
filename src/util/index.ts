@@ -1,3 +1,4 @@
+export { Config } from './config';
 export { promiseResolves, promiseResolveOrDefault } from './promises';
 export {
   jsonToYaml,
