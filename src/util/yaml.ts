@@ -60,3 +60,22 @@ export async function parseYamlOrJson(source: string): Promise<any> {
 
   throw new Error(`file '${source}' is not a json or yaml file`);
 }
+
+export async function stringyfyJsonOrYaml(out: string, data: any): Promise<void> {
+  let rawData = '';
+
+  if (REGEX_JSON_EXTENSION.test(out)) {
+    rawData = JSON.stringify(data, null, 2);
+  } else if (REGEX_YAML_EXTENSION.test(out)) {
+    rawData = yaml.stringify(
+      data,
+      {
+        version: '1.2',
+      },
+    );
+  } else {
+    throw new Error(`file '${out}' is not a json or yaml file`);
+  }
+
+  await fs.writeFile(out, rawData);
+}
