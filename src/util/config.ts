@@ -1,7 +1,9 @@
 import { promises as fs } from 'fs';
+import * as _ from 'lodash';
 import { parseYamlOrJson, stringyfyJsonOrYaml } from './index';
 
 const REGEX_JSON_OR_YAML_EXTENSION = /\.(?:json|ya?ml)$/;
+const REGEX_VALID_KEY = /^[a-zA-Z]+(?:\.[a-zA-Z]+)*$/;
 
 export class Config {
     filePath: string;
@@ -22,8 +24,6 @@ export class Config {
 
     async load(): Promise<void> {
       this.data = await parseYamlOrJson(this.filePath);
-
-      console.log(this.data);
     }
 
     async save(): Promise<void> {
@@ -32,5 +32,21 @@ export class Config {
         return;
       }
       stringyfyJsonOrYaml(this.filePath, this.data);
+    }
+
+    get<T = any>(key: string): T {
+      if (!REGEX_VALID_KEY.test(key)) {
+        throw new Error(`invalid key '${key}'`);
+      }
+
+      return _.get(this.data, key);
+    }
+
+    set<T>(key: string, value: T): void{
+      if (!REGEX_VALID_KEY.test(key)) {
+        throw new Error(`invalid key '${key}'`);
+      }
+
+      _.set(this.data, key, value);
     }
 }
