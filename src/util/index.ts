@@ -1,9 +1,11 @@
 export { Config } from './config';
 export {
+  ConfigValidateUnused,
   ConfigValidateResult,
   ConfigValidateFunction,
   ConfigValidateObject,
   validateConfig,
+  validateConfigExclusive,
 } from './configValidate';
 export { promiseResolves, promiseResolveOrDefault } from './promises';
 export {
