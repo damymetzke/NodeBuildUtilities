@@ -16,3 +16,4 @@ export {
   parseYamlOrJson,
   stringyfyJsonOrYaml,
 } from './yaml';
+export * as validate from './configValidateType';
