@@ -6,5 +6,5 @@ export {
   ConfigValidateObject,
   validateConfig,
   validateConfigExclusive,
-} from './configValidate';
-export * as validate from './configValidateType';
+} from './configValidation';
+export * as validate from './validate';

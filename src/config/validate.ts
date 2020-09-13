@@ -1,6 +1,5 @@
-import * as isEmailImplementation from 'sane-email-validation';
 import { check as cckCkeck } from 'cck';
-import { ConfigValidateFunction } from './configValidate';
+import { ConfigValidateFunction } from './configValidation';
 
 const REGEX_ALPHA = /^[a-zA-Z]*$/;
 const REGEX_NUMERIC = /^[0-9]*$/;
