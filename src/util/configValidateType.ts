@@ -1,3 +1,5 @@
+import * as isEmailImplementation from 'sane-email-validation';
+import { check as cckCkeck } from 'cck';
 import { ConfigValidateFunction } from './configValidate';
 
 const REGEX_ALPHA = /^[a-zA-Z]*$/;
@@ -7,6 +9,8 @@ const REGEX_ALPHA_NUMERIC = /^[a-zA-Z0-9]*$/;
 const REGEX_BINARY = /^(?:0b)[01]*$/;
 const REGEX_OCTAL = /^(?:0o)[0-7]*$/;
 const REGEX_HEXADECIMAL = /^(?:0x)[0-9abcdefABCCEF]*$/;
+
+const REGEX_UUID = /^(?:{[0-9abcdefABCDEF]{8}-[0-9abcdefABCDEF]{4}-[0-9abcdefABCDEF]{4}-[0-9abcdefABCDEF]{4}-[0-9abcdefABCDEF]{12}}|[0-9abcdefABCDEF]{8}-[0-9abcdefABCDEF]{4}-[0-9abcdefABCDEF]{4}-[0-9abcdefABCDEF]{4}-[0-9abcdefABCDEF]{12})$/;
 
 function createRegexValidator(
   test: RegExp,
@@ -163,6 +167,7 @@ export function isBinaryString(): ConfigValidateFunction {
     'value is not a binary string',
   );
 }
+
 export function isOctalString(): ConfigValidateFunction {
   return createRegexValidator(
     REGEX_OCTAL,
@@ -170,10 +175,41 @@ export function isOctalString(): ConfigValidateFunction {
     'value is not an octal string',
   );
 }
+
 export function isHexadecimalString(): ConfigValidateFunction {
   return createRegexValidator(
     REGEX_HEXADECIMAL,
     'value is a hexadecimal string',
     'value is not a hexadecimal string',
   );
+}
+
+export function isUuid(): ConfigValidateFunction {
+  return createRegexValidator(
+    REGEX_UUID,
+    'value is a UUID',
+    'value is not a UUID',
+  );
+}
+
+// todo: write a working email validator, since no package actually validates emails correctly.
+export function isEmail(): ConfigValidateFunction {
+  return (value: any) => {
+    if (typeof value !== 'string') {
+      return {
+        success: false,
+        reason: 'value is not a string',
+      };
+    }
+
+    return cckCkeck(value, 'email')
+      ? {
+        success: true,
+        reason: 'value is a valid email',
+      }
+      : {
+        success: false,
+        reason: 'value is not a valid email',
+      };
+  };
 }
