@@ -1,6 +1,8 @@
 export * as fileSystem from './fileSystem';
 export * as util from './util';
 export * as log from './log';
+export * as config from './config';
+
 export { LOGGER } from './log';
 export
 {
@@ -15,4 +17,4 @@ export
   bindBuildScript, bindBuildScriptParallel,
 } from './bind';
 export { parse, ClParsed as clParsed } from './clParser';
-export { config } from './config';
+export { config as configOld } from './config';

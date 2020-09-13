@@ -1,6 +1,5 @@
-import { promises as fs } from 'fs';
 import * as _ from 'lodash';
-import { parseYamlOrJson, stringyfyJsonOrYaml } from './index';
+import { parseYamlOrJson, stringyfyJsonOrYaml } from '../util/yaml';
 
 const REGEX_JSON_OR_YAML_EXTENSION = /\.(?:json|ya?ml)$/;
 const REGEX_VALID_KEY = /^[a-zA-Z]+(?:\.[a-zA-Z]+)*$/;
