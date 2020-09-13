@@ -25,7 +25,6 @@
   "homepage": "https://github.com/damymetzke/NodeBuildUtilities#readme",
   "devDependencies": {
     "@types/node": "^14.6.0",
-    "@types/sane-email-validation": "^1.1.0",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
     "@typescript-eslint/parser": "^4.1.0",
     "cck": "^1.0.28",
