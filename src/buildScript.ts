@@ -12,7 +12,7 @@ async function main() {
     try {
       // todo: wrap dynamic loader into a function
       // eslint-disable-next-line global-require, import/no-dynamic-require
-      return require(path.join(process.cwd(), 'buildscript.config.js'));
+      return require(path.join(process.cwd(), 'buildscript.js'));
     } catch (error) {
       LOGGER.error('error loading buildscript.config.js:');
       LOGGER.error(error);
