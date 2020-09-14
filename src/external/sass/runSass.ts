@@ -9,10 +9,12 @@ const REGEX_EXTENSION = /^([a-zA-Z][a-zA-Z0-9_]*)\.s[ca]ss$/;
 export interface SassOptions extends Omit<WalkOptions, 'test'>
 {
     sourceMap: boolean;
+    outputStyle: 'expanded' | 'compressed'
 }
 
-const OPTIONS_DEFAULT: Pick<SassOptions, 'sourceMap'> = {
+const OPTIONS_DEFAULT: Pick<SassOptions, 'sourceMap' | 'outputStyle'> = {
   sourceMap: false,
+  outputStyle: 'expanded',
 };
 
 export async function scriptMain(
@@ -44,6 +46,7 @@ export async function scriptMain(
       file: sourcePath,
       outFile: outputPath,
       sourceMap: resultingOptions.sourceMap,
+      outputStyle: resultingOptions.outputStyle,
     });
 
     await fs.mkdir(outputFolder, { recursive: true });
