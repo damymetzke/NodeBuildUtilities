@@ -1,1 +1,1 @@
-export { scriptMain as runSass, sassOptions } from './runSass';
+export { scriptMain as runSass, SassOptions } from './runSass';
