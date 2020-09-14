@@ -6,13 +6,27 @@ import { WalkOptions, walk, FileCallbackResult } from '../../fileSystem/walk';
 const REGEX_RAW_EXTENSION = '^[a-zA-Z][a-zA-Z0-9_]*\\.s[ca]ss$';
 const REGEX_EXTENSION = /^([a-zA-Z][a-zA-Z0-9_]*)\.s[ca]ss$/;
 
-export type sassOptions = Omit<WalkOptions, 'test'>
+export interface SassOptions extends Omit<WalkOptions, 'test'>
+{
+    sourceMap: boolean;
+}
+
+const OPTIONS_DEFAULT: Pick<SassOptions, 'sourceMap'> = {
+  sourceMap: false,
+};
 
 export async function scriptMain(
   sourceDirectory: string,
   outputDirectory: string,
-  options: Partial<sassOptions> = {},
+  options: Partial<SassOptions> = {},
 ): Promise<void> {
+  const resultingOptions:
+    Partial<Omit<SassOptions, 'sourceMap'>>
+    & Pick<SassOptions, 'sourceMap'> = {
+      ...OPTIONS_DEFAULT,
+      ...options,
+    };
+
   walk(sourceDirectory, outputDirectory, async (
     sourcePath: string,
     fileName: string,
@@ -22,17 +36,25 @@ export async function scriptMain(
       outputFolder,
       fileName.replace(REGEX_EXTENSION, (_match, name) => `${name}.css`),
     );
+    const outputMapPath = path.join(
+      outputFolder,
+      fileName.replace(REGEX_EXTENSION, (_match, name) => `${name}.css.map`),
+    );
     const rendered = sass.renderSync({
       file: sourcePath,
       outFile: outputPath,
+      sourceMap: resultingOptions.sourceMap,
     });
 
     await fs.mkdir(outputFolder, { recursive: true });
-    await fs.writeFile(outputPath, rendered.css);
+    const outFileResults = [fs.writeFile(outputPath, rendered.css)];
+    if (resultingOptions.sourceMap) {
+      outFileResults.push(fs.writeFile(outputMapPath, <Buffer>rendered.map));
+    }
 
     return FileCallbackResult.FILE_HANDLED;
   }, {
-    ...options,
+    ...resultingOptions,
     test: REGEX_RAW_EXTENSION,
   });
 }
