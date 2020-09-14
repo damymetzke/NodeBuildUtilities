@@ -1,6 +1,8 @@
 // todo: move extra classes to different file.
 /* eslint-disable max-classes-per-file */
 
+import { LogImplementationConsole } from './logImplementationConsole';
+
 export interface LogImplementation
 {
     verbose(values: any[]): void;
@@ -9,34 +11,12 @@ export interface LogImplementation
     error(values: any[]): void;
 }
 
-export class LogImplementation_Console implements LogImplementation {
-  // eslint-disable-next-line class-methods-use-this
-  verbose(values: any[]): void {
-    console.log('[VERBOSE]', ...values);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  log(values: any[]): void {
-    console.log('[LOG]', ...values);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  warning(values: any[]): void {
-    console.log('[WARNING]', ...values);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  error(values: any[]): void {
-    console.log('[ERROR]', ...values);
-  }
-}
-
 export class Logger {
     implementations: LogImplementation[];
 
     constructor() {
       this.implementations = [
-        new LogImplementation_Console(),
+        new LogImplementationConsole(),
       ];
     }
 
