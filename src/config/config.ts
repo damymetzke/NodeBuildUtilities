@@ -9,9 +9,11 @@ export class Config {
 
     readOnly: boolean;
 
+    // todo: create better interface for config trees
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
 
-    constructor(filePath: string, readOnly: boolean = false) {
+    constructor(filePath: string, readOnly = false) {
       if (REGEX_JSON_OR_YAML_EXTENSION.test(filePath)) {
         this.filePath = filePath;
         this.readOnly = readOnly;
@@ -33,7 +35,7 @@ export class Config {
       stringyfyJsonOrYaml(this.filePath, this.data);
     }
 
-    get<T = any>(key: string): T {
+    get<T = unknown>(key: string): T {
       if (!REGEX_VALID_KEY.test(key)) {
         throw new Error(`invalid key '${key}'`);
       }

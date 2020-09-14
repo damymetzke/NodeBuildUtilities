@@ -43,7 +43,7 @@ export async function yamlToJsonFile(source: string, target: string): Promise<vo
   await fs.writeFile(target, jsonData);
 }
 
-export async function parseYamlOrJson(source: string): Promise<any> {
+export async function parseYamlOrJson(source: string): Promise<unknown> {
   const data = await fs.readFile(source);
   if (REGEX_JSON_EXTENSION.test(source)) {
     return JSON.parse(data.toString());
@@ -61,7 +61,7 @@ export async function parseYamlOrJson(source: string): Promise<any> {
   throw new Error(`file '${source}' is not a json or yaml file`);
 }
 
-export async function stringyfyJsonOrYaml(out: string, data: any): Promise<void> {
+export async function stringyfyJsonOrYaml(out: string, data: unknown): Promise<void> {
   let rawData = '';
 
   if (REGEX_JSON_EXTENSION.test(out)) {
