@@ -14,13 +14,15 @@ export interface ConfigValidateResult
     reason: string;
 }
 
-export type ConfigValidateFunction = (object: any)=>Omit<ConfigValidateResult, 'key'|'type'>|boolean;
+export type ConfigValidateFunction = (object: unknown)=>Omit<ConfigValidateResult, 'key'|'type'>|boolean;
 
 export type ConfigValidateObject = {
     [key: string]: ConfigValidateObject | ConfigValidateFunction
 }
 
 function validateConfigImplementation(
+  // todo: fix this
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   config: any,
   validate: ConfigValidateObject | ConfigValidateFunction,
   key: string,

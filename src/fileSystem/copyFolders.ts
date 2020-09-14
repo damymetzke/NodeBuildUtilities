@@ -6,7 +6,7 @@ export async function scriptMain(
   options: Partial<CopyFolderOptions>,
 ): Promise<CopyFolderResult> {
   const result: CopyFolderResult[] = await Promise.all(
-    sourceTargetPairs.map(([source, target]) => runParallelScript('std:fileSystem/copyFolder.js', source, target, options)),
+    sourceTargetPairs.map(([source, target]) => <Promise<CopyFolderResult>>runParallelScript('std:fileSystem/copyFolder.js', source, target, options)),
   );
 
   return result.reduce((total, current) => ({

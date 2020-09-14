@@ -2,10 +2,10 @@ import { LogImplementationConsole } from './logImplementationConsole';
 
 export interface LogImplementation
 {
-    verbose(values: any[]): void;
-    log(values: any[]): void;
-    warning(values: any[]): void;
-    error(values: any[]): void;
+    verbose(values: unknown[]): void;
+    log(values: unknown[]): void;
+    warning(values: unknown[]): void;
+    error(values: unknown[]): void;
 }
 
 export class Logger {
@@ -17,25 +17,25 @@ export class Logger {
       ];
     }
 
-    verbose(...values: any[]) {
+    verbose(...values: unknown[]): void {
       this.implementations.forEach((implementation) => {
         implementation.verbose(values);
       });
     }
 
-    log(...values: any[]) {
+    log(...values: unknown[]): void {
       this.implementations.forEach((implementation) => {
         implementation.log(values);
       });
     }
 
-    warning(...values: any[]) {
+    warning(...values: unknown[]): void {
       this.implementations.forEach((implementation) => {
         implementation.warning(values);
       });
     }
 
-    error(...values: any[]) {
+    error(...values: unknown[]): void {
       this.implementations.forEach((implementation) => {
         implementation.error(values);
       });

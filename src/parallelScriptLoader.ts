@@ -5,10 +5,11 @@ if (!process.send) {
   process.exit(1);
 }
 
-process.once('message', async (data: { scriptPath: string; args: any[]; }) => {
+process.once('message', async (data: { scriptPath: string; args: unknown[]; }) => {
   const { scriptPath, args } = data;
   // todo: wrap dynamic import in function
-  // eslint-disable-next-line global-require, import/no-dynamic-require
+  // eslint-disable-next-line max-len
+  // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
   const script = require(scriptPath);
   const mainExists = (typeof script.scriptMain === 'function');
 
