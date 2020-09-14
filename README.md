@@ -1,3 +1,5 @@
+![ESLint](https://github.com/damymetzke/node-build-util/workflows/ESLint/badge.svg)
+
 # Node-Build-Util
 node-build-util is a package containing useful utilities to simplify custom build scripts.
 The primary purpose is to move the build responsibility away from npm and into javascript.

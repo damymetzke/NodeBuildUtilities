@@ -8,7 +8,8 @@
     "b-script": "./lib/buildScript.js"
   },
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "lint": "eslint --max-warnings 0 src/**"
   },
   "repository": {
     "type": "git",
