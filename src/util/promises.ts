@@ -3,7 +3,7 @@
  *
  * @returns true if the promise resolves, false if the promise rejects.
  */
-export function promiseResolves(promise: Promise<any>): Promise<boolean> {
+export function promiseResolves(promise: Promise<unknown>): Promise<boolean> {
   return new Promise<boolean>((resolve) => {
     promise
       .then(() => {

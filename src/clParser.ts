@@ -52,7 +52,7 @@ export class ClParsed {
       return Boolean(this.flags[name]);
     }
 
-    hasOption(name: string): Boolean {
+    hasOption(name: string): boolean {
       return (name in this.options);
     }
 

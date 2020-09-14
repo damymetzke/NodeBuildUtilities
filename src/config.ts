@@ -53,6 +53,8 @@ export class ConfigVariable<T extends ConfigType> {
 }
 
 function fillConfig(source: ConfigObject, target: ConfigObject) {
+  // todo: create type instead of any to use in config key access
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Object.entries(source).forEach(([key, value]: [string, any]) => {
     if (typeof value === 'undefined') {
       // ignore undefined
@@ -73,7 +75,7 @@ function fillConfig(source: ConfigObject, target: ConfigObject) {
   });
 }
 
-export async function loadConfig(filePath: string) {
+export async function loadConfig(filePath: string): Promise<void> {
   const data = await promiseResolveOrDefault(
     fs.readFile(filePath)
       .then((data) => data.toString())
@@ -84,7 +86,7 @@ export async function loadConfig(filePath: string) {
   fillConfig(data, configData);
 }
 
-export async function saveConfig(filePath: string) {
+export async function saveConfig(filePath: string): Promise<void> {
   await fs.writeFile(filePath, JSON.stringify(configData, null, 2));
 }
 

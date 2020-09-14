@@ -4,7 +4,7 @@ import {
 } from './scriptLoader';
 import { runBin, runBuildScriptParallel } from '.';
 
-export function bindScript(scriptPath: string, ...args: any[]): () => Promise<any> {
+export function bindScript(scriptPath: string, ...args: unknown[]): () => Promise<unknown> {
   return _.bind(
     runScript, null,
     scriptPath,
@@ -12,7 +12,7 @@ export function bindScript(scriptPath: string, ...args: any[]): () => Promise<an
   );
 }
 
-export function bindParallelScript(scriptPath: string, ...args: any[]): () => Promise<any> {
+export function bindParallelScript(scriptPath: string, ...args: unknown[]): () => Promise<unknown> {
   return _.bind(
     runParallelScript, null,
     scriptPath,
@@ -54,14 +54,14 @@ export function bindBin(
   );
 }
 
-export function bindBuildScript(script: string): () => Promise<any> {
+export function bindBuildScript(script: string): () => Promise<unknown> {
   return _.bind(
     runBuildScript, null,
     script,
   );
 }
 
-export function bindBuildScriptParallel(script: string): () => Promise<any> {
+export function bindBuildScriptParallel(script: string): () => Promise<unknown> {
   return _.bind(
     runBuildScriptParallel, null,
     script,
