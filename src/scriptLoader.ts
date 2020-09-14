@@ -18,13 +18,14 @@ function parseScript(script: string): string {
     .replace(REGEX_ADD_EXTENSION, (_match, scriptPath) => `${scriptPath}.js`); // add js if it doesn't exist
 }
 
-export function runScriptSync(scriptPath: string, ...args: any[]): any {
+export function runScriptSync(scriptPath: string, ...args: unknown[]): unknown {
   const filePath = parseScript(scriptPath);
 
   let scriptMain;
   try {
     // todo: wrap dynamic import in function
-    // eslint-disable-next-line global-require, import/no-dynamic-require
+    // eslint-disable-next-line max-len
+    // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
     scriptMain = require(filePath).scriptMain;
   } catch (error) {
     throw new Error(`Script ${filePath} not found`);
@@ -39,16 +40,18 @@ export function runScriptSync(scriptPath: string, ...args: any[]): any {
   return scriptMain(...args);
 }
 
-export async function runScript(scriptPath: string, ...args: any[]): Promise<any> {
+export async function runScript(scriptPath: string, ...args: unknown[]): Promise<unknown> {
   return runScriptSync(scriptPath, ...args);
 }
 
-export function runParallelScript(scriptPath: string, ...args: any[]): Promise<any> {
-  return new Promise<any>((resolve, reject) => {
+export function runParallelScript(scriptPath: string, ...args: unknown[]): Promise<unknown> {
+  return new Promise<unknown>((resolve, reject) => {
     const filePath = parseScript(scriptPath);
 
     const child = fork(path.join(__dirname, 'parallelScriptLoader.js'));
 
+    // todo: create custom type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     child.on('message', (message: any) => {
       switch (message.type) {
         case 'reject':
@@ -132,9 +135,10 @@ export function runBin(
   }`, args, options);
 }
 
-export async function runBuildScript(script: string): Promise<any> {
+export async function runBuildScript(script: string): Promise<unknown> {
   // todo: wrap dynamic import in function
-  // eslint-disable-next-line global-require, import/no-dynamic-require
+  // eslint-disable-next-line max-len
+  // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
   const buildscriptfile = require(path.join(process.cwd(), 'buildscript.config.js'));
   if (!('buildScripts' in buildscriptfile) || !(script in buildscriptfile.buildScripts)) {
     throw new Error(`script '${script}' not found!`);

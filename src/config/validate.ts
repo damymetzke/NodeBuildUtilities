@@ -16,7 +16,7 @@ function createRegexValidator(
   successText: string,
   failText: string,
 ): ConfigValidateFunction {
-  return (value: any) => {
+  return (value: unknown) => {
     if (typeof value !== 'string') {
       return {
         success: false,
@@ -36,7 +36,7 @@ function createRegexValidator(
 }
 
 export function exists(): ConfigValidateFunction {
-  return (value: any) => (value === undefined
+  return (value: unknown) => (value === undefined
     ? {
       success: false,
       reason: 'key does not exist',
@@ -48,7 +48,7 @@ export function exists(): ConfigValidateFunction {
 }
 
 export function isOfType(expectedType: 'number' | 'string' | 'boolean' | 'object' | 'function' | 'symbol' | 'undefined'): ConfigValidateFunction {
-  return (value: any) => ((typeof value !== expectedType)
+  return (value: unknown) => ((typeof value !== expectedType)
     ? {
       success: false,
       reason: `value is not of type ${expectedType}`,
@@ -59,11 +59,11 @@ export function isOfType(expectedType: 'number' | 'string' | 'boolean' | 'object
     });
 }
 
-export function isAnyOf(firstValue: any, ...values: any[]): ConfigValidateFunction {
+export function isAnyOf(firstValue: unknown, ...values: unknown[]): ConfigValidateFunction {
   const itemsString = `[${String(firstValue)}${
     values.reduce((total, value) => `${total}, ${value}`, '')
   }]`;
-  return (value: any) => {
+  return (value: unknown) => {
     if ([firstValue, ...values].some((testValue) => value === testValue)) {
       return {
         success: true,
@@ -77,12 +77,12 @@ export function isAnyOf(firstValue: any, ...values: any[]): ConfigValidateFuncti
   };
 }
 
-export function isNoneOf(firstValue: any, ...values: any[]): ConfigValidateFunction {
+export function isNoneOf(firstValue: unknown, ...values: unknown[]): ConfigValidateFunction {
   const itemsString = `[${String(firstValue)}${
     values.reduce((total, value) => `${total}, ${value}`, '')
   }]`;
 
-  return (value: any) => {
+  return (value: unknown) => {
     if ([firstValue, ...values].every((testValue) => value === testValue)) {
       return {
         success: true,
@@ -110,7 +110,7 @@ export function isNumberInRange({ min, max }:
       : ` < ${max}`
   }`;
 
-  return (value: any) => {
+  return (value: unknown) => {
     if (typeof value !== 'number') {
       return {
         success: false,
@@ -193,7 +193,7 @@ export function isUuid(): ConfigValidateFunction {
 
 // todo: write a working email validator, since no package actually validates emails correctly.
 export function isEmail(): ConfigValidateFunction {
-  return (value: any) => {
+  return (value: unknown) => {
     if (typeof value !== 'string') {
       return {
         success: false,

@@ -5,9 +5,9 @@ import { LogImplementation } from './log';
 export class LogImplementationFile implements LogImplementation {
     file?: FileHandle;
 
-    isWriting: boolean = false;
+    isWriting = false;
 
-    buffer: string = '';
+    buffer = '';
 
     constructor(filePath: string) {
       (async () => {
@@ -15,7 +15,7 @@ export class LogImplementationFile implements LogImplementation {
       })();
     }
 
-    async writeFileImplementation(toPrint: string) {
+    async writeFileImplementation(toPrint: string): Promise<void> {
       if (this.file === undefined) {
         setTimeout(() => this.writeFileImplementation(toPrint), 1000);
       }
@@ -30,7 +30,7 @@ export class LogImplementationFile implements LogImplementation {
       }
     }
 
-    writeToFile(channel: string, values: any[]) {
+    writeToFile(channel: string, values: unknown[]): void {
       const toPrint = values.map((value) => String(value))
         .reduce((total, current) => `${total}${current} `, '')
         .slice(0, -1);
@@ -44,19 +44,19 @@ export class LogImplementationFile implements LogImplementation {
       this.writeFileImplementation(`[${channel.toUpperCase()}], ${toPrint}\n`);
     }
 
-    verbose(values: any[]): void {
+    verbose(values: unknown[]): void {
       this.writeToFile('verbose', values);
     }
 
-    log(values: any[]): void {
+    log(values: unknown[]): void {
       this.writeToFile('log', values);
     }
 
-    warning(values: any[]): void {
+    warning(values: unknown[]): void {
       this.writeToFile('warning', values);
     }
 
-    error(values: any[]): void {
+    error(values: unknown[]): void {
       this.writeToFile('error', values);
     }
 }

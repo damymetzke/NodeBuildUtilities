@@ -1,8 +1,8 @@
 import { runBin } from '../../scriptLoader';
 
 // todo: parse and compile output
-export function scriptMain(projectFile: string = '.') {
-  runBin(
+export async function scriptMain(projectFile = '.'): Promise<void> {
+  await runBin(
     'tsc',
     [
       '-p',
