@@ -1,7 +1,7 @@
 export * as fileSystem from './fileSystem';
 export * as util from './util';
 export * as log from './log';
-export * as config from './config';
+export * as config from './config/index';
 
 export { LOGGER } from './log';
 export
