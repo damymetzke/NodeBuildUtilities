@@ -37,7 +37,7 @@ function createRegexValidator(
 
 export function optionally(func: ConfigValidateFunction): ConfigValidateFunction {
   return (value: unknown) => {
-    if (typeof value === undefined) {
+    if (typeof value === 'undefined') {
       return {
         success: true,
         reason: 'optional value was not defined',

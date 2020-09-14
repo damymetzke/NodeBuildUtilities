@@ -2,6 +2,7 @@ export * as fileSystem from './fileSystem';
 export * as util from './util';
 export * as log from './log';
 export * as config from './config/index';
+export * as external from './external';
 
 export { LOGGER } from './log';
 export
