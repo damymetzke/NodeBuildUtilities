@@ -1,6 +1,3 @@
-// todo: move extra classes to different file.
-/* eslint-disable max-classes-per-file */
-
 import { LogImplementationConsole } from './logImplementationConsole';
 
 export interface LogImplementation
