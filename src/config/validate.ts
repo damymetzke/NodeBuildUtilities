@@ -35,6 +35,52 @@ function createRegexValidator(
   };
 }
 
+export function optionally(func: ConfigValidateFunction): ConfigValidateFunction {
+  return (value: unknown) => {
+    if (typeof value === undefined) {
+      return {
+        success: true,
+        reason: 'optional value was not defined',
+      };
+    }
+
+    return func(value);
+  };
+}
+
+export function isArrayOf(func: ConfigValidateFunction): ConfigValidateFunction {
+  return (value: unknown) => {
+    if (!Array.isArray(value)) {
+      return {
+        success: false,
+        reason: 'value is not an array',
+      };
+    }
+    const failures = value.filter((subValue) => {
+      const subResult = func(subValue);
+      if (typeof subResult === 'boolean') {
+        return !subResult;
+      }
+      return !subResult.success;
+    });
+
+    if (failures.length === 0) {
+      return {
+        success: true,
+        reason: 'all values in the array are valid',
+      };
+    }
+
+    return {
+      success: false,
+      reason: `one or more values in array are invalid\n${
+        typeof failures[0]}` === 'boolean'
+        ? ''
+        : `first failure:\n${failures[0].reason}`,
+    };
+  };
+}
+
 export function exists(): ConfigValidateFunction {
   return (value: unknown) => (value === undefined
     ? {
