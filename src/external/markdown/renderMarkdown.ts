@@ -5,22 +5,36 @@ import { FileCallbackResult, walk, WalkOptions } from '../../fileSystem';
 
 const REGEX_FILE_EXTENSION = /^(?<name>[^]*)\.[a-zA-Z]+$/;
 
-export type MarkdownOptions = WalkOptions;
-type MarkDownOptionsExclusive = Pick<MarkdownOptions, 'test'>
+export interface MarkdownOptions extends WalkOptions
+{
+  xHtml: boolean;
+  style: string;
+  githubFlavored: boolean;
+}
+type MarkDownOptionsExclusive = Pick<MarkdownOptions, 'xHtml' | 'style' | 'githubFlavored'>
 
 const DEFAULT_OPTIONS: MarkDownOptionsExclusive = {
-  test: '[^]*',
+  xHtml: false,
+  style: '',
+  githubFlavored: true,
 };
 
 export async function scriptMain(sourceDirectory: string,
   outDirectory: string, options: Partial<MarkdownOptions>): Promise<void> {
-  const resultingOptions: MarkDownOptionsExclusive = {
+  const resultingOptions: Partial<MarkdownOptions> = {
     ...DEFAULT_OPTIONS,
     ...options,
   };
   walk(sourceDirectory, outDirectory, async (sourcePath, fileName, outFolder) => {
     const data = await fs.readFile(sourcePath);
-    const converted = marked(data.toString());
+    const converted = marked(
+      data.toString(),
+      {
+        gfm: resultingOptions.githubFlavored,
+        xhtml: resultingOptions.xHtml,
+      },
+    );
+
     await fs.mkdir(outFolder, { recursive: true });
     await fs.writeFile(
       path.join(outFolder,
