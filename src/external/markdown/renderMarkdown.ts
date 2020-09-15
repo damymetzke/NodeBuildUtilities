@@ -1,9 +1,12 @@
 import * as marked from 'marked';
 import { promises as fs } from 'fs';
 import * as path from 'path';
+import * as sass from 'sass';
 import { FileCallbackResult, walk, WalkOptions } from '../../fileSystem';
 
 const REGEX_FILE_EXTENSION = /^(?<name>[^]*)\.[a-zA-Z]+$/;
+const REGEX_STYLE_SHEET_IS_SASS = /\.s[ca]ss$/;
+const REGEX_STYLE_SHEET_IS_CSS = /\.css$/;
 
 function makeHtml(content: string, title: string, styleSheet?: string) {
   const styleSheetElement = (typeof styleSheet === 'undefined')
@@ -40,13 +43,36 @@ const DEFAULT_OPTIONS: MarkDownOptionsExclusive = {
   githubFlavored: true,
 };
 
+async function setupStyleSheet(outDirectory: string, sourceFile: string): Promise<void> {
+  if (REGEX_STYLE_SHEET_IS_CSS.test(sourceFile)) {
+    await fs.mkdir(outDirectory, { recursive: true });
+    await fs.copyFile(sourceFile, path.join(outDirectory, 'style.css'));
+    return;
+  }
+  if (REGEX_STYLE_SHEET_IS_SASS.test(sourceFile)) {
+    const result = sass.renderSync({ file: sourceFile, outputStyle: 'compressed' });
+    await fs.writeFile(path.join(outDirectory, 'style.css'), result.css);
+    return;
+  }
+
+  throw new Error(`stylesheet ${sourceFile} is not of type css or sass`);
+}
+
 export async function scriptMain(sourceDirectory: string,
   outDirectory: string, options: Partial<MarkdownOptions>): Promise<void> {
-  const resultingOptions: Partial<MarkdownOptions> = {
+  const resultingOptions: MarkDownOptionsExclusive & Partial<Omit<MarkdownOptions, 'xHtml' | 'styleSheet' | 'githubFlavored'>> = {
     ...DEFAULT_OPTIONS,
     ...options,
   };
+
+  if (resultingOptions.styleSheet !== '') {
+    setupStyleSheet(outDirectory, resultingOptions.styleSheet);
+  }
+
   walk(sourceDirectory, outDirectory, async (sourcePath, fileName, outFolder) => {
+    const pathToRoot = path.relative(outFolder, outDirectory);
+    const styleSheetPath = path.join(pathToRoot, 'style.css');
+
     const data = await fs.readFile(sourcePath);
     const converted = marked(
       data.toString(),
@@ -56,7 +82,9 @@ export async function scriptMain(sourceDirectory: string,
       },
     );
 
-    const htmlOutput = makeHtml(converted, fileName);
+    const htmlOutput = (resultingOptions.styleSheet === '')
+      ? makeHtml(converted, fileName)
+      : makeHtml(converted, fileName, styleSheetPath);
 
     await fs.mkdir(outFolder, { recursive: true });
     await fs.writeFile(
