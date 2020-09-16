@@ -13,8 +13,8 @@ plugins:
   - "@typescript-eslint"
   - import
 rules:
-  camelcase: warn
-  class-methods-use-this: warn
+  camelcase: error
+  class-methods-use-this: error
   no-console: 0
   no-param-reassign: 0
   no-plusplus: 0
