@@ -1,4 +1,3 @@
-import { pick } from 'lodash';
 import { WalkOptions } from '../../fileSystem';
 import { runBin } from '../../scriptLoader';
 
