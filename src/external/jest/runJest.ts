@@ -12,6 +12,7 @@ const DEFAULT_OPTIONS: JestOptionsExclusive = {
   configFile: '',
 };
 
+// todo: parse error output and generate errors
 export async function scriptMain(options: Partial<JestOptions>): Promise<void> {
   const resultingOptions: JestOptionsExclusive & Partial<WalkOptions> = {
     ...DEFAULT_OPTIONS,
