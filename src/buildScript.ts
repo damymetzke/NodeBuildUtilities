@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 
 import * as path from 'path';
+import { promises as fs } from 'fs';
 import { LOGGER } from './log';
 import { parse } from './clParser';
+
+import { runTypescript } from './external/typescript';
+import { Config } from './config/index';
 
 interface IBuildScript
 {
@@ -11,20 +15,33 @@ interface IBuildScript
   scriptOutDirectory?: string;
 }
 
-function setupScriptDirectories(buildscriptFile: IBuildScript) {
-  const scriptDirectory = (typeof buildscriptFile.scriptDirectory === 'undefined')
+async function setupScriptDirectories(buildscriptFile: IBuildScript): Promise<void> {
+  const scriptDirectory = (typeof buildscriptFile.scriptDirectory !== 'undefined')
     ? buildscriptFile.scriptDirectory
     : 'script';
 
-  const scriptOutDirectory = (typeof buildscriptFile.scriptDirectory === 'undefined')
-    ? buildscriptFile.scriptDirectory
-    : 'script';
+  const scriptOutDirectory = (typeof buildscriptFile.scriptOutDirectory !== 'undefined')
+    ? buildscriptFile.scriptOutDirectory
+    : 'scriptOut';
+
+  const scriptConfigDirectory = path.join(scriptOutDirectory, 'config');
 
   LOGGER.verbose(
     'Setting 2 directories:\n',
-    `* scriptDirectory    = '${scriptDirectory}\n'`,
+    `* scriptDirectory    = '${scriptDirectory}\n`,
     `* scriptOutDirectory = '${scriptOutDirectory}'`,
   );
+
+  await fs.mkdir(scriptConfigDirectory, { recursive: true });
+  const tsConfig = new Config(path.join(scriptConfigDirectory, 'tsconfig.json'));
+
+  tsConfig.set<string[]>('include', [path.join(scriptDirectory, '**/*')]);
+  tsConfig.set<string[]>('exclude', ['node_modules', '**/*.spec.ts']);
+  tsConfig.set<string>('compilerOptions.module', 'commonjs');
+  tsConfig.set<string>('compilerOptions.target', 'ES2019');
+  tsConfig.set<boolean>('compilerOptions.sourceMap', true);
+
+  tsConfig.save();
 }
 
 async function main() {
@@ -52,7 +69,7 @@ async function main() {
     process.exit(1);
   }
 
-  setupScriptDirectories(buildscriptFile);
+  await setupScriptDirectories(buildscriptFile);
 
   if (typeof buildscriptFile.buildScripts === 'undefined' || !(script in buildscriptFile.buildScripts)) {
     LOGGER.error(`script '${script}' not found!`);
