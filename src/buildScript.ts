@@ -33,15 +33,22 @@ async function setupScriptDirectories(buildscriptFile: IBuildScript): Promise<vo
   );
 
   await fs.mkdir(scriptConfigDirectory, { recursive: true });
-  const tsConfig = new Config(path.join(scriptConfigDirectory, 'tsconfig.json'));
+  const tsConfigPath = path.join(scriptConfigDirectory, 'tsconfig.json');
+  const tsConfig = new Config(tsConfigPath);
 
-  tsConfig.set<string[]>('include', [path.join(scriptDirectory, '**/*')]);
+  tsConfig.set<string[]>('include', [path.join(
+    path.relative(scriptConfigDirectory, scriptDirectory),
+    '**/*',
+  )]);
   tsConfig.set<string[]>('exclude', ['node_modules', '**/*.spec.ts']);
   tsConfig.set<string>('compilerOptions.module', 'commonjs');
   tsConfig.set<string>('compilerOptions.target', 'ES2019');
   tsConfig.set<boolean>('compilerOptions.sourceMap', true);
+  tsConfig.set<string>('compilerOptions.outDir', '../compiled');
 
-  tsConfig.save();
+  await tsConfig.save();
+
+  await runTypescript(tsConfigPath);
 }
 
 async function main() {
