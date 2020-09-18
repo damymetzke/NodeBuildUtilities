@@ -4,6 +4,7 @@ import { parseYamlOrJson, stringyfyJsonOrYaml } from '../util/yaml';
 const REGEX_JSON_OR_YAML_EXTENSION = /\.(?:json|ya?ml)$/;
 const REGEX_VALID_KEY = /^[a-zA-Z]+(?:\.[a-zA-Z]+)*$/;
 
+// todo: write write-only and read-only versions of config
 export class Config {
     filePath: string;
 
@@ -17,6 +18,7 @@ export class Config {
       if (REGEX_JSON_OR_YAML_EXTENSION.test(filePath)) {
         this.filePath = filePath;
         this.readOnly = readOnly;
+        this.data = {};
         return;
       }
 
