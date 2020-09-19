@@ -7,6 +7,8 @@ import { parse } from './clParser';
 
 import { runTypescript } from './external/typescript';
 import { Config } from './config/index';
+import { promiseResolves } from './util';
+import { runBin } from './scriptLoader';
 
 interface IBuildScript
 {
@@ -52,6 +54,15 @@ async function setupScriptDirectories(buildscriptFile: IBuildScript): Promise<vo
 }
 
 async function main() {
+  const typescriptBuildscriptPath = path.join(process.cwd(), 'buildscript.ts');
+  if (await promiseResolves(fs.stat(typescriptBuildscriptPath))) {
+    await runBin('tsc', [
+      typescriptBuildscriptPath,
+      '--target', 'ES2019',
+      '--module', 'commonjs',
+    ], {});
+  }
+
   // eslint falsely flags this function even though a return statement would be unreachable
   // eslint-disable-next-line consistent-return
   const buildscriptFile: IBuildScript = (() => {
