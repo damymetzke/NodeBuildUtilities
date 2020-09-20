@@ -1,0 +1,1 @@
+export { ErrorCollection } from './errorCollection';

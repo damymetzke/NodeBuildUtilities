@@ -3,6 +3,7 @@ export * as util from './util';
 export * as log from './log';
 export * as config from './config/index';
 export * as external from './external';
+export * as error from './error';
 
 export { LOGGER } from './log';
 export
