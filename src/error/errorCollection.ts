@@ -13,11 +13,11 @@ export class ErrorCollection extends Error {
       if (errors.length === 0) {
         super('');
         this.errors = [];
+      } else {
+        super(errors[errors.length - 1].message);
+        this.latest = _.last(errors);
+        this.errors = errors.slice(0, -1);
       }
-
-      super(errors[errors.length - 1].message);
-      this.latest = _.last(errors);
-      this.errors = errors.slice(0, -1);
 
       this.name = ErrorCollection.ERROR_NAME;
     }
@@ -38,7 +38,8 @@ export class ErrorCollection extends Error {
         this.errors.push(this.latest);
       }
       this.latest = _.last(errors);
-      this.errors = errors.slice(0, -1);
+      this.message = (<Error>_.last(errors)).message;
+      this.errors = [...this.errors, ...errors.slice(0, -1)];
     }
 
     concat(other: ErrorCollection): ErrorCollection {
