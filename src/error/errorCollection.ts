@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 
 export class ErrorCollection extends Error {
-    static ERROR_NAME = 'CollectionError';
+    static ERROR_NAME = 'error-collection';
 
     static ALL_ERROR_NAMES = new Set([ErrorCollection.ERROR_NAME])
 
