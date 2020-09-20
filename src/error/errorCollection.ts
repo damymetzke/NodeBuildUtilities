@@ -26,7 +26,7 @@ export class ErrorCollection extends Error {
       this.message = error.message;
     }
 
-    concat(errors: Error[]): void{
+    append(errors: Error[]): void{
       if (errors.length === 0) {
         return;
       }
@@ -35,5 +35,17 @@ export class ErrorCollection extends Error {
       }
       this.latest = _.last(errors);
       this.errors = errors.slice(0, -1);
+    }
+
+    concat(other: ErrorCollection): ErrorCollection {
+      const thisErrors = (typeof this.latest === 'undefined')
+        ? []
+        : [...this.errors, this.latest];
+
+      const otherErrors = (typeof other.latest === 'undefined')
+        ? []
+        : [...other.errors, other.latest];
+
+      return new ErrorCollection([...thisErrors, ...otherErrors]);
     }
 }
