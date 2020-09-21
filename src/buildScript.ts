@@ -10,6 +10,17 @@ import { Config } from './config/index';
 import { promiseResolves } from './util';
 import { runBin } from './scriptLoader';
 
+enum BuildscriptExitCode
+{
+  SUCCESS = 0,
+
+  CANNOT_LOAD_BUILDSCRIPT = 100,
+  NO_SCRIPT_ARGUMENT = 101,
+  SCRIPT_NOT_FOUND = 102,
+  SCRIPT_EXITED_WITH_ERROR = 103,
+  SCRIPT_THROWN_NON_ERROR = 104
+}
+
 interface IBuildScript
 {
   buildScripts?: {[name: string]:()=>unknown};
@@ -73,28 +84,64 @@ async function main() {
     } catch (error) {
       LOGGER.error('error loading buildscript.config.js:');
       LOGGER.error(error);
-      process.exit(1);
+      process.exit(BuildscriptExitCode.CANNOT_LOAD_BUILDSCRIPT);
     }
   })();
 
   const args = parse(process.argv.slice(2))
-    .option('target', 1);
+    .option('target', 1)
+    .option('print-error', 1);
+
+  if (args.hasOption('print-error')) {
+    const [error] = args.getOption('print-error');
+    const errorNumber = parseInt(error, 10);
+
+    if (errorNumber in BuildscriptExitCode) {
+      LOGGER.error(`error (${errorNumber}) = ${BuildscriptExitCode[errorNumber]}`);
+    } else {
+      LOGGER.error(`error (${errorNumber}) is not recoginized`);
+    }
+    return;
+  }
 
   const [script] = args.positional;
 
   if (!script) {
     LOGGER.error('no script passed through cli');
-    process.exit(1);
+    process.exit(BuildscriptExitCode.NO_SCRIPT_ARGUMENT);
   }
 
   await setupScriptDirectories(buildscriptFile);
 
   if (typeof buildscriptFile.buildScripts === 'undefined' || !(script in buildscriptFile.buildScripts)) {
     LOGGER.error(`script '${script}' not found!`);
-    process.exit(1);
+    process.exit(BuildscriptExitCode.SCRIPT_NOT_FOUND);
   }
 
-  buildscriptFile.buildScripts[script]();
+  try {
+    const result = await Promise.resolve(buildscriptFile.buildScripts[script]());
+
+    LOGGER.log(`\n\nCompleted Running Buildscript '${script}'`);
+
+    if (typeof result === 'number' && result !== 0) {
+      LOGGER.error(`script exited with exit code: '${result}'`);
+      process.exit(result);
+    }
+    if (result instanceof Error) {
+      LOGGER.error(`script exited with error:\n'${result.message}'`);
+      process.exit(BuildscriptExitCode.SCRIPT_EXITED_WITH_ERROR);
+    }
+    // anything except for errors and numbers is silently ignored
+    process.exit(0);
+  } catch (error) {
+    if (!(error instanceof Error)) {
+      LOGGER.error('script has thrown an error, but it is not an instance of \'Error\'');
+      process.exit(BuildscriptExitCode.SCRIPT_THROWN_NON_ERROR);
+    }
+
+    LOGGER.error(`script has thrown an error:\n'${error.message}'`);
+    process.exit(BuildscriptExitCode.SCRIPT_EXITED_WITH_ERROR);
+  }
 }
 
 main();
