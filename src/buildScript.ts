@@ -94,7 +94,27 @@ async function main() {
     process.exit(1);
   }
 
-  buildscriptFile.buildScripts[script]();
+  try {
+    const result = await Promise.resolve(buildscriptFile.buildScripts[script]());
+    if (typeof result === 'number' && result !== 0) {
+      LOGGER.error(`script exited with exit code: '${result}'`);
+      process.exit(result);
+    }
+    if (result instanceof Error) {
+      LOGGER.error(`script exited with error:\n'${result.message}'`);
+      process.exit(2);
+    }
+    // anything except for errors and numbers is silently ignored
+    process.exit(0);
+  } catch (error) {
+    if (!(error instanceof Error)) {
+      LOGGER.error('script has thrown an error, but it is not an instance of \'Error\'');
+      process.exit(3);
+    }
+
+    LOGGER.error(`script has thrown an error:\n'${error.message}'`);
+    process.exit(4);
+  }
 }
 
 main();
