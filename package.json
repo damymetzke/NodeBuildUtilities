@@ -29,7 +29,7 @@
     "@types/node": "^14.6.0",
     "@types/sass": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^4.1.0",
-    "@typescript-eslint/parser": "^4.1.0",
+    "@typescript-eslint/parser": "^4.2.0",
     "cck": "^1.0.28",
     "eslint": "^7.8.1",
     "eslint-config-airbnb-base": "^14.2.0",
