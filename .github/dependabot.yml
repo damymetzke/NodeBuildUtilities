@@ -11,3 +11,10 @@ updates:
     # instead of the default widen strategy.
     # https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates#versioning-strategy
     versioning-strategy: increase
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: '08:00'
+      timezone: Europe/Amsterdam
