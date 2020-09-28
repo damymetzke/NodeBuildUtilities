@@ -1,7 +1,18 @@
-export class SubProcessError extends Error {
-    static ERROR_NAME = 'sub-process-error';
+import { BuildError, ISerializedError } from './buildError';
+import { deserializeError, registerDeserializer } from './deserializer';
+import { serializeError } from './serializer';
 
-    static ALL_ERROR_NAMES = new Set([
+interface ISerializedSubProcessError
+{
+  error?: ISerializedError;
+  exitCode?: number;
+  stderr?: string;
+}
+
+export class SubProcessError extends BuildError {
+    static readonly ERROR_NAME = 'sub-process-error';
+
+    static readonly ALL_ERROR_NAMES = new Set([
       SubProcessError.ERROR_NAME,
     ]);
 
@@ -25,4 +36,26 @@ export class SubProcessError extends Error {
 
       this.name = SubProcessError.ERROR_NAME;
     }
+
+    serialize(): ISerializedError {
+      return <ISerializedError<ISerializedSubProcessError>>{
+        type: this.name,
+        error: {
+          error: (!this.error)
+            ? undefined
+            : serializeError(this.error),
+          exitCode: this.exitCode,
+          stderr: this.stderr,
+        },
+      };
+    }
 }
+
+registerDeserializer(SubProcessError.ERROR_NAME,
+  (serialized: ISerializedSubProcessError) => new SubProcessError({
+    error: (!serialized.error)
+      ? undefined
+      : deserializeError(serialized.error),
+    exitCode: serialized.exitCode,
+    stderr: serialized.stderr,
+  }));
