@@ -1,6 +1,14 @@
 import * as _ from 'lodash';
+import { BuildError, ISerializedError } from './buildError';
+import { deserializeError, registerDeserializer } from './deserializer';
+import { serializeError } from './serializer';
 
-export class ErrorCollection extends Error {
+interface ISerializedErrorCollection
+{
+  errors: ISerializedError[];
+}
+
+export class ErrorCollection extends BuildError {
     static ERROR_NAME = 'error-collection';
 
     static ALL_ERROR_NAMES = new Set([ErrorCollection.ERROR_NAME])
@@ -69,4 +77,20 @@ export class ErrorCollection extends Error {
 
       return new ErrorCollection(filteredErrors);
     }
+
+    serialize(): ISerializedError {
+      return <ISerializedError<ISerializedErrorCollection>>{
+        type: ErrorCollection.ERROR_NAME,
+        error: {
+          errors: typeof this.latest === 'undefined'
+            ? []
+            : [...this.errors, this.latest].map((error) => serializeError(error)),
+        },
+      };
+    }
 }
+
+registerDeserializer(ErrorCollection.ERROR_NAME, (serialized: ISerializedErrorCollection) => {
+  const deserialized = serialized.errors.map((error) => deserializeError(error));
+  return new ErrorCollection(deserialized);
+});
