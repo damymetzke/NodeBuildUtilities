@@ -1,5 +1,7 @@
 import { fork, exec } from 'child_process';
 import * as path from 'path';
+import { SubProcessError } from './error';
+import { ConvertReturn } from './script/convertReturn';
 
 const REGEX_NAMESPACE_SCRIPT = /^(\w+):([^ \n\t]+)$/;
 const REGEX_ADD_EXTENSION = /^([^ \n\t]+?)(?:.js)?$/;
@@ -18,26 +20,32 @@ function parseScript(script: string): string {
     .replace(REGEX_ADD_EXTENSION, (_match, scriptPath) => `${scriptPath}.js`); // add js if it doesn't exist
 }
 
-export function runScriptSync(scriptPath: string, ...args: unknown[]): unknown {
+export async function runScriptSync(scriptPath: string, ...args: unknown[]): Promise<void> {
   const filePath = parseScript(scriptPath);
 
-  let scriptMain;
+  let result: void | SubProcessError;
   try {
-    // todo: wrap dynamic import in function
-    // eslint-disable-next-line max-len
-    // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
-    scriptMain = require(filePath).scriptMain;
+    result = await (async () => {
+      // todo: wrap dynamic import in function
+      // eslint-disable-next-line max-len
+      // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
+      const { scriptMain } = require(filePath);
+      if (!scriptMain) {
+        throw new Error(`Script ${filePath} does not define scriptMain`);
+      }
+      if (typeof scriptMain !== 'function') {
+        throw new Error(`Script ${filePath} defines scriptMain, but it is not a function`);
+      }
+
+      return ConvertReturn(() => scriptMain(...args));
+    })();
   } catch (error) {
     throw new Error(`Script ${filePath} not found`);
   }
-  if (!scriptMain) {
-    throw new Error(`Script ${filePath} does not define scriptMain`);
-  }
-  if (typeof scriptMain !== 'function') {
-    throw new Error(`Script ${filePath} defines scriptMain, but it is not a function`);
-  }
 
-  return scriptMain(...args);
+  if (typeof result !== 'undefined') {
+    throw result;
+  }
 }
 
 export async function runScript(scriptPath: string, ...args: unknown[]): Promise<unknown> {
