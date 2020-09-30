@@ -1,6 +1,6 @@
 import { fork, exec } from 'child_process';
 import * as path from 'path';
-import { SubProcessError } from './error';
+import { BuildError, SubProcessError } from './error';
 import { ConvertReturn } from './script/convertReturn';
 
 const REGEX_NAMESPACE_SCRIPT = /^(\w+):([^ \n\t]+)$/;
@@ -87,7 +87,13 @@ export function runNpm(scriptName: string, npmRoot?: string): Promise<void> {
       cwd,
     }, (error) => {
       if (error) {
-        reject(error);
+        reject(new SubProcessError(
+          {
+            error: new BuildError(error.message),
+            stderr: error.cmd,
+            exitCode: error.code,
+          },
+        ));
       }
       resolve();
     });
@@ -123,7 +129,13 @@ export function runShell(
         },
         (error) => {
           if (error) {
-            reject(error);
+            reject(new SubProcessError(
+              {
+                error: new BuildError(error.message),
+                stderr: error.cmd,
+                exitCode: error.code,
+              },
+            ));
           }
 
           resolve();
