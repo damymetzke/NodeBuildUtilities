@@ -1,4 +1,6 @@
+import { serializeError, SubProcessError } from './error';
 import { LOGGER } from './log';
+import { ConvertReturn } from './script';
 
 if (!process.send) {
   LOGGER.error('process is not a valid child_process');
@@ -17,7 +19,7 @@ process.once('message', async (data: { scriptPath: string; args: unknown[]; }) =
     if (process.send) {
       process.send({
         type: 'reject',
-        message: 'arguments passed but no scriptMain defined',
+        error: serializeError(new Error('arguments passed but no scriptMain defined')),
       });
     }
     return;
@@ -27,33 +29,21 @@ process.once('message', async (data: { scriptPath: string; args: unknown[]; }) =
     if (process.send) {
       process.send({
         type: 'resolve',
-        result: undefined,
       });
     }
     return;
   }
 
-  try {
-    const result = script.scriptMain(...args);
-    if (process.send) {
-      if (!(result instanceof Promise)) {
-        process.send({
-          type: 'resolve',
-          result,
-        });
-      }
-
-      const resolvedResult = await result;
-      process.send({
-        type: 'resolve',
-        result: resolvedResult,
-      });
-    }
-  } catch (error) {
-    if (process.send) {
+  const result = await ConvertReturn(async () => script.scriptMain(...args));
+  if (process.send) {
+    if (result instanceof SubProcessError) {
       process.send({
         type: 'reject',
-        message: String(error),
+        error: result.serialize(),
+      });
+    } else {
+      process.send({
+        type: 'resolve',
       });
     }
   }

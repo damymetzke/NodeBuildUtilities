@@ -1,6 +1,6 @@
 import { fork, exec } from 'child_process';
 import * as path from 'path';
-import { BuildError, SubProcessError } from './error';
+import { BuildError, deserializeError, SubProcessError } from './error';
 import { ConvertReturn } from './script/convertReturn';
 
 const REGEX_NAMESPACE_SCRIPT = /^(\w+):([^ \n\t]+)$/;
@@ -63,10 +63,10 @@ export function runParallelScript(scriptPath: string, ...args: unknown[]): Promi
     child.on('message', (message: any) => {
       switch (message.type) {
         case 'reject':
-          reject(message.message);
+          reject(deserializeError(message.error));
           break;
         case 'resolve':
-          resolve(message.result);
+          resolve();
           break;
         default:
           reject(new Error('invalid response from parallelScriptLoader'));
