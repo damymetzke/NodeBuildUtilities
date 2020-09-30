@@ -24,6 +24,6 @@ export async function ConvertReturn(
       return new SubProcessError({ error });
     }
 
-    return new UnknownError(error);
+    return new SubProcessError({ error: new UnknownError(error) });
   }
 }
