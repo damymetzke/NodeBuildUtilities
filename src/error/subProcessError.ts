@@ -54,6 +54,30 @@ export class SubProcessError extends BuildError {
         },
       };
     }
+
+    toString(): string {
+      let result = `${this.name}:\n`;
+
+      if (typeof this.exitCode !== 'undefined') {
+        result += `SubProcess exited with exit code '${this.exitCode}'`;
+      }
+
+      if (typeof this.error !== 'undefined') {
+        result += 'SubProcess exited with error:\n';
+        // todo: add indent utility function
+        result += this.error.toString().replace(/\n/g, '\n\t');
+        result += '\n';
+      }
+
+      if (typeof this.stderr !== 'undefined') {
+        result += 'stderr output:\n';
+        this.stderr.replace(/\n/g, '\n\t');
+      }
+
+      result += '\n';
+
+      return result;
+    }
 }
 
 registerDeserializer(SubProcessError.ERROR_NAME,
