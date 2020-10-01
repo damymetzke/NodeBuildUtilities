@@ -60,11 +60,39 @@ export function runParallelScript(scriptPath: string, ...args: unknown[]): Promi
 
     // todo: create custom type
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let result: any = null;
+
+    // todo: create custom type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     child.on('message', (message: any) => {
-      switch (message.type) {
+      result = message;
+    });
+
+    child.on('close', (code) => {
+      switch (result) {
         case 'reject':
-          reject(deserializeError(message.error));
+        {
+          const deserialized = deserializeError(result.error);
+          if (!(deserialized instanceof SubProcessError)) {
+            reject(deserialized);
+            break;
+          }
+
+          if (child.stdout) {
+            deserialized.stdout = String(child.stdout.read());
+          }
+
+          if (child.stderr) {
+            deserialized.stderr = String(child.stderr.read());
+          }
+
+          if (typeof deserialized.exitCode === 'undefined') {
+            deserialized.exitCode = code;
+          }
+
+          reject(deserialized);
           break;
+        }
         case 'resolve':
           resolve();
           break;
