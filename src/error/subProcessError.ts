@@ -20,9 +20,13 @@ export class SubProcessError extends BuildError {
 
     exitCode?: number;
 
+    stdout?: string;
+
     stderr?: string;
 
-    constructor({ error, exitCode, stderr }: {error?: Error, exitCode?: number, stderr?: string}) {
+    constructor({
+      error, exitCode, stdout, stderr,
+    }: {error?: Error, exitCode?: number, stdout?: string, stderr?: string}) {
       if (typeof error !== 'undefined') {
         super(`Subprocess failed with error:\n${error.message}`);
       } else if (typeof exitCode !== 'undefined') {
@@ -33,6 +37,7 @@ export class SubProcessError extends BuildError {
       this.error = error;
       this.exitCode = exitCode;
       this.stderr = stderr;
+      this.stdout = stdout;
 
       this.name = SubProcessError.ERROR_NAME;
     }
