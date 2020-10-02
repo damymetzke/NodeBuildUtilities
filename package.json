@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "lint": "eslint --max-warnings 0 src/**"
+    "lint": "eslint --max-warnings 0 src/**",
+    "build-markdown": "node ./lib/buildscript.js buildMarkdown"
   },
   "repository": {
     "type": "git",
