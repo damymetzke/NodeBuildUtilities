@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { Config, validateConfig } from '../../config/index';
 import { renderMarkdown } from './index';
 import { MarkdownOptions } from './renderMarkdown';
@@ -14,5 +15,9 @@ export async function scriptMain(configPath: string): Promise<void> {
   const output = config.get<string>('output');
   const options = config.get<Partial<MarkdownOptions>>('options');
 
-  await Promise.all(config.get<string[]>('input').map((input) => renderMarkdown(input, output, options)));
+  await Promise.all(config.get<string[]>('input').map((input) => renderMarkdown(
+    path.join(path.dirname(configPath), input),
+    path.join(path.dirname(configPath), output),
+    options,
+  )));
 }
