@@ -72,7 +72,7 @@ export async function scriptMain(sourceDirectory: string,
     setupStyleSheet(outDirectory, resultingOptions.styleSheet);
   }
 
-  walk(sourceDirectory, outDirectory, async (sourcePath, fileName, outFolder) => {
+  await walk(sourceDirectory, outDirectory, async (sourcePath, fileName, outFolder) => {
     const pathToRoot = path.relative(outFolder, outDirectory);
     const styleSheetPath = path.join(pathToRoot, 'style.css');
 
