@@ -28,15 +28,10 @@ interface IBuildScript
   scriptOutDirectory?: string;
 }
 
-async function setupScriptDirectories(buildscriptFile: IBuildScript): Promise<void> {
-  const scriptDirectory = (typeof buildscriptFile.scriptDirectory !== 'undefined')
-    ? buildscriptFile.scriptDirectory
-    : 'script';
-
-  const scriptOutDirectory = (typeof buildscriptFile.scriptOutDirectory !== 'undefined')
-    ? buildscriptFile.scriptOutDirectory
-    : 'scriptOut';
-
+async function buildScriptDirectoriy(
+  scriptDirectory: string,
+  scriptOutDirectory: string,
+): Promise<void> {
   const scriptConfigDirectory = path.join(scriptOutDirectory, 'config');
 
   LOGGER.verbose(
@@ -62,6 +57,18 @@ async function setupScriptDirectories(buildscriptFile: IBuildScript): Promise<vo
   await tsConfig.save();
 
   await runTypescript(tsConfigPath);
+}
+
+async function setupScriptDirectories(buildscriptFile: IBuildScript): Promise<void> {
+  const { scriptDirectory, scriptOutDirectory } = buildscriptFile;
+
+  const tasks: Promise<void>[] = [];
+
+  if (typeof scriptDirectory === 'string' && typeof scriptOutDirectory === 'string') {
+    tasks.push(buildScriptDirectoriy(scriptDirectory, scriptOutDirectory));
+  }
+
+  await Promise.all(tasks);
 }
 
 async function main() {
