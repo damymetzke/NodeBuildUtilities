@@ -12,12 +12,25 @@ export async function scriptMain(configPath: string): Promise<void> {
   if (!validateResult.success) {
     throw new Error(`config file ${configPath} is invalid for markdown`);
   }
+
   const output = config.get<string>('output');
   const options = config.get<Partial<MarkdownOptions>>('options');
+
+  const resultingOptions: Partial<MarkdownOptions> = {};
+
+  Object.entries(options).forEach(([key, value]: [string, unknown]) => {
+    if (key !== 'styleSheet') {
+      // todo: figure out how to properly type this
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (<any>resultingOptions)[key] = value;
+    }
+
+    resultingOptions.styleSheet = path.join(path.dirname(configPath), <string>value);
+  });
 
   await Promise.all(config.get<string[]>('input').map((input) => renderMarkdown(
     path.join(path.dirname(configPath), input),
     path.join(path.dirname(configPath), output),
-    options,
+    resultingOptions,
   )));
 }

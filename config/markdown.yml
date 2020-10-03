@@ -1,3 +1,5 @@
 input:
   - ../documentation/md
 output: ../docBuild/md
+options:
+  styleSheet: ../documentation/mdstyle.scss
