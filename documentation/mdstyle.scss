@@ -27,7 +27,41 @@ body
     overflow: auto;
     height: 100%;
 
+    //Firefox scrollbar
     scrollbar-color: #173117 #326f32;
+
+    //Webkit scrollbar (Chromium)
+    &::-webkit-scrollbar
+    {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-button
+    {
+        background-color: #326f32;
+
+        &:increment
+        {
+            border-width: 4px 4px 0 4px;
+            border-color: white transparent transparent transparent;
+        }
+
+        &:decrement
+        {
+            border-width: 0 4px 4px 4px;
+            border-color: transparent transparent white transparent;
+        }
+    }
+
+    &::-webkit-scrollbar-track-piece
+    {
+        background-color: #326f32;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+        background-color: #173117;
+    }
 }
 
 *
