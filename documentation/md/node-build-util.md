@@ -19,7 +19,7 @@ Do **not** use NBU for complex or performance dependent build systems.
 - Supply scripts for specific actions (rendering markdown, linting, etc.).
 - Make the process of creating a new project as fast and easy as possible.
 - Fully support and encourage the use of promises + async/await.
-- Stay as close to vanilla javascript/typescript as possible.
+- Stay as close to vanilla JavaScript/TypeScript as possible.
 
 ## Contains
 
