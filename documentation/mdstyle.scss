@@ -1,3 +1,20 @@
+@use 'sass:color';
+@use 'sass:map';
+
+$color: (
+    'light': #fbffe1,
+    'highlight': #4f8d1d,
+    'header': #25084f,
+    'code-background': #495441,
+    'quote-background': #b9c4b0,
+    'background-1': #dcdfc7,
+    'background-2': #b6d0b8,
+);
+
+$color: map-merge($color, (
+    'highlight-dark':color.adjust(color.scale(map.get($color, 'highlight'), $lightness: -50%), $hue: -10)
+));
+
 html {
   box-sizing: border-box;
 }
@@ -7,7 +24,7 @@ html {
 
 html
 {
-    background: linear-gradient(to bottom right, #dcdfc7, #b6d0b8);
+    background: linear-gradient(to bottom right, map.get($color, 'background-1'), map.get($color, 'background-2'));
 }
 
 body
@@ -15,11 +32,11 @@ body
     width: min(1200px, 90vw);
     margin: 20px auto;
     padding: 20px;
-    background-color: #fbffe1;
+    background-color: map.get($color, 'light');
     height: calc(100vh - 40px);
     border-radius: 40px;
 
-    box-shadow: 10px 10px 2px #4f8d1d;
+    box-shadow: 10px 10px 2px map.get($color, 'highlight');
 }
 
 #gen--content
@@ -28,7 +45,7 @@ body
     height: 100%;
 
     //Firefox scrollbar
-    scrollbar-color: #173117 #326f32;
+    scrollbar-color: map.get($color, 'highlight-dark') map.get($color, 'highlight');
 
     //Webkit scrollbar (Chromium)
     &::-webkit-scrollbar
@@ -38,29 +55,29 @@ body
 
     &::-webkit-scrollbar-button
     {
-        background-color: #326f32;
+        background-color: map.get($color, 'highlight');;
 
         &:increment
         {
             border-width: 4px 4px 0 4px;
-            border-color: white transparent transparent transparent;
+            border-color: map.get($color, 'light') transparent transparent transparent;
         }
 
         &:decrement
         {
             border-width: 0 4px 4px 4px;
-            border-color: transparent transparent white transparent;
+            border-color: transparent transparent map.get($color, 'light') transparent;
         }
     }
 
     &::-webkit-scrollbar-track-piece
     {
-        background-color: #326f32;
+        background-color: map.get($color, 'highlight');
     }
 
     &::-webkit-scrollbar-thumb
     {
-        background-color: #173117;
+        background-color: map.get($color, 'highlight-dark');
     }
 }
 
@@ -72,7 +89,7 @@ body
 h1, h2, h3, h4, h5, h6
 {
     font-family: serif;
-    color: rgb(37, 8, 79);
+    color: map.get($color, 'header');
 }
 
 h1
@@ -82,14 +99,14 @@ h1
 
 blockquote
 {
-    background-color: #b9c4b0;
+    background-color: map.get($color, 'quote-background');;
     margin-left: 20px;
 
     display: inline-block;
     padding: 15px;
     border-radius: 0 10px 10px 0;
 
-    border-left: 10px solid #63b520;
+    border-left: 10px solid map.get($color, 'highlight');
 
     p
     {
@@ -100,8 +117,8 @@ blockquote
 pre
 {
     margin-left: 20px;
-    color: white;
-    background-color: #495441;
+    color: map.get($color, 'light');
+    background-color: map.get($color, 'code-background');
     padding: 15px;
     display: inline-block;
     border-radius: 10px;
