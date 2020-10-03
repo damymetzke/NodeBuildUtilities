@@ -14,12 +14,20 @@ body
 {
     width: min(1200px, 90vw);
     margin: 20px auto;
-    padding: 10px;
+    padding: 20px;
     background-color: #fbffe1;
-    min-height: calc(100vh - 40px);
+    height: calc(100vh - 40px);
     border-radius: 40px;
 
     box-shadow: 10px 10px 2px #4f8d1d;
+}
+
+#gen--content
+{
+    overflow: auto;
+    height: 100%;
+
+    scrollbar-color: #173117 #326f32;
 }
 
 *

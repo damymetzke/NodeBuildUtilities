@@ -23,7 +23,9 @@ function makeHtml(content: string, title: string, styleSheet?: string) {
         ${styleSheetElement}
     </head>
     <body>
+      <div id="gen--content">
         ${content}
+      </div>
     </body>
     </html>
   `;
