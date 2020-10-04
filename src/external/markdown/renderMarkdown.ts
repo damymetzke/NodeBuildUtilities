@@ -32,8 +32,7 @@ function makeHtml(content: string, title: string, styleSheet?: string) {
   `;
 }
 
-function onHighlight(code: string, lang: string, callback?:
-  (error: any | undefined, code?: string) => void): string | void {
+function onHighlight(code: string, lang: string): string | void {
   const result = highlightAuto(code, [lang]);
   if (result.errorRaised instanceof Error) {
     throw result.errorRaised;
