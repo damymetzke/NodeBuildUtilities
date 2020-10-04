@@ -2,6 +2,7 @@ import * as marked from 'marked';
 import { promises as fs } from 'fs';
 import * as path from 'path';
 import * as sass from 'sass';
+import { highlightAuto } from 'highlight.js';
 import { FileCallbackResult, walk, WalkOptions } from '../../fileSystem';
 
 const REGEX_FILE_EXTENSION = /^(?<name>[^]*)\.[a-zA-Z]+$/;
@@ -29,6 +30,15 @@ function makeHtml(content: string, title: string, styleSheet?: string) {
     </body>
     </html>
   `;
+}
+
+function onHighlight(code: string, lang: string): string | void {
+  const result = highlightAuto(code, [lang]);
+  if (result.errorRaised instanceof Error) {
+    throw result.errorRaised;
+  }
+
+  return result.value;
 }
 
 export interface MarkdownOptions extends WalkOptions
@@ -88,6 +98,7 @@ export async function scriptMain(sourceDirectory: string,
       {
         gfm: resultingOptions.githubFlavored,
         xhtml: resultingOptions.xHtml,
+        highlight: onHighlight,
       },
     );
 
