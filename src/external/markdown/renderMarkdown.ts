@@ -9,6 +9,17 @@ const REGEX_FILE_EXTENSION = /^(?<name>[^]*)\.[a-zA-Z]+$/;
 const REGEX_STYLE_SHEET_IS_SASS = /\.s[ca]ss$/;
 const REGEX_STYLE_SHEET_IS_CSS = /\.css$/;
 
+function setupLinkRenderer() {
+  // bug: marked definitions expect whole renderer, but can actually be partial.
+  const renderer = <marked.Renderer>{
+    link(href:string, title:string, text:string) {
+      return `<a href="${href}" title="${title}">${text}</a>`;
+    },
+  };
+
+  marked.use({ renderer });
+}
+
 function makeHtml(content: string, title: string, styleSheet?: string) {
   const styleSheetElement = (typeof styleSheet === 'undefined')
     ? ''
@@ -75,6 +86,7 @@ async function setupStyleSheet(outDirectory: string, sourceFile: string): Promis
 
 export async function scriptMain(sourceDirectory: string,
   outDirectory: string, options: Partial<MarkdownOptions>): Promise<void> {
+  setupLinkRenderer();
   const resultingOptions: MarkDownOptionsExclusive & Partial<WalkOptions> = {
     ...DEFAULT_OPTIONS,
     ...options,
