@@ -3,6 +3,7 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import * as sass from 'sass';
 import { highlightAuto } from 'highlight.js';
+import * as yaml from 'yaml';
 import { FileCallbackResult, walk, WalkOptions } from '../../fileSystem';
 
 const REGEX_FILE_EXTENSION = /^(?<name>[^]*)\.[a-zA-Z]+$/;
@@ -103,12 +104,19 @@ export async function scriptMain(sourceDirectory: string,
     const pathToRoot = path.relative(outFolder, outDirectory);
     const styleSheetPath = path.join(pathToRoot, 'style.css');
 
-    const title = typeof resultingOptions.title === 'string'
+    let title = typeof resultingOptions.title === 'string'
       ? resultingOptions.title
       : resultingOptions.title(fileName);
 
     const data = await fs.readFile(sourcePath);
-    const dataWithoutHeader = data.toString().replace(REGEX_YAML_HEADER, (_match, _p0, _offset, _string, groups) => '');
+    const dataWithoutHeader = data.toString()
+      .replace(REGEX_YAML_HEADER, (_match, _p0, _offset, _string, groups: {header: string}) => {
+        const headerData = yaml.parse(groups.header);
+        if (typeof headerData.title !== 'undefined') {
+          title = headerData.title;
+        }
+        return '';
+      });
     const converted = marked(
       dataWithoutHeader,
       {
