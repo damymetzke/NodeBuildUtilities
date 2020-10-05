@@ -2,6 +2,6 @@
 
 <nav>
 
-- [Project synopsis](./node-build-util.html "Node Build Util")
+- [Project synopsis](./node-build-util.md "Node Build Util")
 
 </nav>
