@@ -9,6 +9,7 @@ const REGEX_FILE_EXTENSION = /^(?<name>[^]*)\.[a-zA-Z]+$/;
 const REGEX_STYLE_SHEET_IS_SASS = /\.s[ca]ss$/;
 const REGEX_STYLE_SHEET_IS_CSS = /\.css$/;
 const REGEX_LINK_TO_MARKDOWN = /^(?<file>[^]+)\.md$/;
+const REGEX_YAML_HEADER = /^\w*---(?<header>[^]*?)---/;
 
 function setupLinkRenderer() {
   // bug: marked definitions expect whole renderer, but can actually be partial.
@@ -107,8 +108,9 @@ export async function scriptMain(sourceDirectory: string,
       : resultingOptions.title(fileName);
 
     const data = await fs.readFile(sourcePath);
+    const dataWithoutHeader = data.toString().replace(REGEX_YAML_HEADER, (_match, _p0, _offset, _string, groups) => '');
     const converted = marked(
-      data.toString(),
+      dataWithoutHeader,
       {
         gfm: resultingOptions.githubFlavored,
         xhtml: resultingOptions.xHtml,
