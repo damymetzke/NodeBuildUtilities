@@ -8,12 +8,14 @@ import { FileCallbackResult, walk, WalkOptions } from '../../fileSystem';
 const REGEX_FILE_EXTENSION = /^(?<name>[^]*)\.[a-zA-Z]+$/;
 const REGEX_STYLE_SHEET_IS_SASS = /\.s[ca]ss$/;
 const REGEX_STYLE_SHEET_IS_CSS = /\.css$/;
+const REGEX_LINK_TO_MARKDOWN = /^(?<file>[^]+)\.md$/;
 
 function setupLinkRenderer() {
   // bug: marked definitions expect whole renderer, but can actually be partial.
   const renderer = <marked.Renderer>{
     link(href:string, title:string, text:string) {
-      return `<a href="${href}" title="${title}">${text}</a>`;
+      const resultingHref = href.replace(REGEX_LINK_TO_MARKDOWN, (_match, _p0, _offset, _string, groups: {file: string}) => `${groups.file}.html`);
+      return `<a href="${resultingHref}" title="${title}">${text}</a>`;
     },
   };
 
