@@ -24,7 +24,7 @@ function setupLinkRenderer() {
   marked.use({ renderer });
 }
 
-function makeHtml(content: string, title: string, styleSheet?: string) {
+function makeHtml(content: string, title: string, contentClass: string, styleSheet?: string) {
   const styleSheetElement = (typeof styleSheet === 'undefined')
     ? ''
     : `<link rel="stylesheet" href="${styleSheet}">`;
@@ -39,7 +39,7 @@ function makeHtml(content: string, title: string, styleSheet?: string) {
         ${styleSheetElement}
     </head>
     <body>
-      <div id="gen--content">
+      <div id="gen--content" class="${contentClass}">
         ${content}
       </div>
     </body>
@@ -108,12 +108,17 @@ export async function scriptMain(sourceDirectory: string,
       ? resultingOptions.title
       : resultingOptions.title(fileName);
 
+    let contentClass = '';
+
     const data = await fs.readFile(sourcePath);
     const dataWithoutHeader = data.toString()
       .replace(REGEX_YAML_HEADER, (_match, _p0, _offset, _string, groups: {header: string}) => {
         const headerData = yaml.parse(groups.header);
-        if (typeof headerData.title !== 'undefined') {
+        if (typeof headerData.title === 'string') {
           title = headerData.title;
+        }
+        if (typeof headerData.class === 'string') {
+          contentClass = headerData.class;
         }
         return '';
       });
@@ -127,8 +132,8 @@ export async function scriptMain(sourceDirectory: string,
     );
 
     const htmlOutput = (resultingOptions.styleSheet === '')
-      ? makeHtml(converted, title)
-      : makeHtml(converted, title, styleSheetPath);
+      ? makeHtml(converted, title, contentClass)
+      : makeHtml(converted, title, contentClass, styleSheetPath);
 
     await fs.mkdir(outFolder, { recursive: true });
     await fs.writeFile(
