@@ -14,7 +14,7 @@
  <!--
     Mark this box ([X])if you think this commit should be squashed.
     Do this if you have too many small commits, or broken commits.
-    Note that this is not a guarentee, only a suggestion.
+    Note that this is not a guarantee, only a suggestion.
  -->
  [ ] I think this PR should be squashed.
 ## Changes
@@ -29,13 +29,13 @@
 
 ## Context
 <!--
-    Put anything here that does dot fit into 'changes'.
+    Put anything here that does not fit into 'changes'.
     This includes:
     - links to issues.
     - links to external websites.
     - reasons why certain decisions have been made.
 
-    when linking to an issue that should be closed make sure to use a keyword like Closes, Fixes.
+    When linking to an issue that should be closed make sure to use a keyword like Closes, Fixes.
     For example:
 
         Closes #111
