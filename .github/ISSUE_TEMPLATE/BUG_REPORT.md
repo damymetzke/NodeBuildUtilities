@@ -1,3 +1,10 @@
+---
+name: Bug Report
+about: Report a bug
+title: ''
+labels: bug
+assignees: ''
+---
 <!--
     Please make sure you have done the following before submitting a bug report:
     - Indirect problems (like problems in generated code), can be considered bugs;
