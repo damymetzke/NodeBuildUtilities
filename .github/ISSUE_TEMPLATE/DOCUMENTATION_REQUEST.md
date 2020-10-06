@@ -9,12 +9,12 @@ assignees: ''
 <!--
     Please request documentation in one of the following situations:
     - The documentation for a section is lacking in its entirety.
-    - There existing documentation is outdated, misleading or vague.
+    - The existing documentation is outdated, misleading or vague.
     - You personally, or somebody else, had trouble doing something that could be helped by proper documentation.
 
     Please do not request documentation in the following situations:
     - The section is too small;
-        as a rule of thumb take at most 10 functions, or its equivelance.
+        as a rule of thumb take at most 10 functions, or its equivalent.
     - Spelling mistakes.
     - The section is still in early development, and can change.
 
@@ -36,7 +36,7 @@ assignees: ''
 
 ## Context
 <!--
-    Add any aditional content like:
+    Add any additional context like:
     - Screenshots
     - Code
     - References to issues
