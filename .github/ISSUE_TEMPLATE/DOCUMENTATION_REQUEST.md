@@ -34,9 +34,10 @@ assignees: ''
     Please be very descriptive, the more information the better the documentation.
 -->
 
-## Content
+## Context
 <!--
     Add any aditional content like:
     - Screenshots
     - Code
+    - References to issues
 -->
