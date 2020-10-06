@@ -12,7 +12,7 @@ assignees: ''
     - The feature should not add additional mandatory setup for the project.
     - The feature should work with promises + async/await.
     - The feature should work with vanilla JavaScript/TypeScript,
-        Do not suggest to add unnecessary complexity.
+    - Do not suggest to add unnecessary complexity.
 -->
 
 ## Problem
@@ -31,13 +31,14 @@ assignees: ''
 <!--
     You explained the problem,
     now provide at least 1 solution to the problem.
-    Feel free to propose multiple solution,
+    Feel free to propose multiple solutions,
     or to ask for further discussion.
 -->
 
-## Content
+## Context
 <!--
-    Add any aditional content like:
+    Add any relevant additional context like:
     - Screenshots
     - Code
+    - References to issues
 -->
