@@ -1,5 +1,7 @@
 <!--
     Please make sure you have done the following before submitting a bug report:
+    - Indirect problems (like problems in generated code), can be considered bugs;
+        However, make sure this is not a bug in your code.
     - Make sure you have checked out the latest version.
     - Make sure the latest stable release of node and npm are installed.
     - Run npm ci to make sure all packages are up to date.
@@ -27,6 +29,7 @@
     Add extra points that are missing.
     Be as specific as you can be,
     but if you do not know about something you don't have to include it.
+    NBU is a generic package, so environments and contexts can differ greatly.
 -->
 - OS: (e.g. linux-debian, windows)
 - Architecture: (e.g. AMDx86, x64)
