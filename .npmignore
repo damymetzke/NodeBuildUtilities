@@ -3,7 +3,11 @@ node_modules/
 
 #output
 docBuild/
+testBuild/
 
 #buildscript
 buildscript.js
 buildscript.ts
+
+#test
+test/
