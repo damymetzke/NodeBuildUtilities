@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc -p .",
     "lint": "eslint --max-warnings 0 src/**",
-    "build-markdown": "node ./lib/buildscript.js buildMarkdown"
+    "build-markdown": "node ./lib/buildscript.js buildMarkdown",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
