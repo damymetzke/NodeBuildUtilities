@@ -16,7 +16,7 @@
     Do this if you have too many small commits, or broken commits.
     Note that this is not a guarantee, only a suggestion.
  -->
- [ ] I think this PR should be squashed.
+ - [ ] I think this PR should be squashed.
 ## Changes
 <!--
     Provide a list of changes.
