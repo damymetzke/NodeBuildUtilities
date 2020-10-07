@@ -11,7 +11,7 @@
     "build": "tsc -p .",
     "lint": "eslint --max-warnings 0 src/**",
     "build-markdown": "node ./lib/buildscript.js buildMarkdown",
-    "test": "jest"
+    "test": "node ./lib/buildscript.js test"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/damymetzke/NodeBuildUtilities#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.14",
     "@types/marked": "^1.1.0",
     "@types/node": "^14.11.5",
     "@types/sass": "^1.16.0",
