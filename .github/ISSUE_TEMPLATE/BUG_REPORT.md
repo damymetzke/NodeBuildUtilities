@@ -6,6 +6,17 @@ labels: bug
 assignees: ''
 ---
 <!--
+    IF YOUR BUG IS RELATED TO SECURITY ISSUES,
+    CONSIDER CONTACTING A COLLABORATOR OR CREATING A PR FIRST.
+    IF A SECURITY BUG IS ALREADY PUBLIC KNOWLEDGE,
+    IT IS BETTER TO CONTINUE WRITING THE ISSUE.
+
+    mark the following box ([X]) if this bug has security implications.
+-->
+
+- [ ] This bug has security implications.
+
+<!--
     Please make sure you have done the following before submitting a bug report:
     - Indirect problems (like problems in generated code), can be considered bugs;
         However, make sure this is not a bug in your code.
