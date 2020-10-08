@@ -8,7 +8,7 @@ title: Feature - Config
 Config is a system used to store config information in `YAML` or `JSON` files.
 It allows for the easy reading and writing of configuration files.
 
-### Relevant Source Code
+### Sources
 
 |Type |Name  |File            |
 |-----|------|----------------|
@@ -49,4 +49,52 @@ Quick example:
     readConfig.set('e', 400); // INCORRECT: readonly config can not be written to.
 
     readConfig.save(); // INCORRECT: readonly config can never be written to disk.
+```
+
+### [Function] constructor
+
+```ts
+    constructor(filePath: string, readOnly = false);
+```
+
+### [Function] load
+
+Load config from disk.
+File has been specified in constructor.
+
+```ts
+    load(): Promise<void>;
+```
+
+### [Function] save
+
+Save config to disk.
+File has been specified in constructor.
+Will *not* work if config is set to read-only.
+
+```ts
+    save(): Promise<void>;
+```
+
+### [Function] get
+
+Get config variable by key.
+Access nested objects uaing dots `.`.
+Example: `a.b.c`.
+Access arrays as such: `a[0]` (not recommended).
+
+```ts
+    get<T = unknown>(key: string): T;
+```
+
+### [Function] set
+
+Set config variables by key.
+Access nested objects uaing dots `.`.
+Example: `a.b.c`.
+Access arrays as such: `a[0]` (not recommended).
+Will *not* work if config is set to read-only.
+
+```ts
+    set<T>(key: string, value: T): void;
 ```
