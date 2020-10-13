@@ -31,7 +31,7 @@
     "@types/marked": "^1.1.0",
     "@types/node": "^14.11.8",
     "@types/sass": "^1.16.0",
-    "@typescript-eslint/eslint-plugin": "^4.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.0",
     "cck": "^1.0.28",
     "eslint": "^7.11.0",
