@@ -18,7 +18,9 @@
     "url": "git+https://github.com/damymetzke/NodeBuildUtilities.git"
   },
   "keywords": [
-    "build"
+    "parallelization",
+    "build-automation",
+    "nodejs"
   ],
   "author": "Damy Metzke",
   "license": "MIT",
