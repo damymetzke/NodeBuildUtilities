@@ -35,7 +35,7 @@
     "@types/sass": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
-    "cck": "^1.0.28",
+    "cck": "^1.0.29",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1",
