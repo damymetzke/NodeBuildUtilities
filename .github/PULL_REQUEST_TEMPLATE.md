@@ -3,7 +3,7 @@
 
     Before submitting this PR consider the following:
     - Keep PR's small, as a rule of thumb do not go over 10 commits.
-    - Only do one thing at the time.
+    - Only do one thing at a time.
     - Your commit messages are part of the PR, make sure they are well written.
  -->
 ## Changes
