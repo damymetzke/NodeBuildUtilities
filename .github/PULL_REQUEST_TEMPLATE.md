@@ -3,20 +3,9 @@
 
     Before submitting this PR consider the following:
     - Keep PR's small, as a rule of thumb do not go over 10 commits.
-    - Keep PR's focused, do not edit unrelated files.
-    - If you encountered a serious bug during development of a feature/upgrade,
-        consider submitting a separate PR.
-    - If you know how, consider squashing broken commits to keep the history as clean as possible.
-    - Commit messages are also considered part of the PR.
-        If the commit messages are bad your PR will not be accepted.
+    - Only do one thing at the time.
+    - Your commit messages are part of the PR, make sure they are well written.
  -->
-
- <!--
-    Mark this box ([X])if you think this commit should be squashed.
-    Do this if you have too many small commits, or broken commits.
-    Note that this is not a guarantee, only a suggestion.
- -->
- - [ ] I think this PR should be squashed.
 ## Changes
 <!--
     Provide a list of changes.
@@ -25,7 +14,7 @@
     Too many points might mean that your PR is too large.
 -->
 
-- 
+- Change 1
 
 ## Context
 <!--
