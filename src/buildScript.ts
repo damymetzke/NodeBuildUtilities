@@ -85,7 +85,7 @@ async function main() {
   // eslint-disable-next-line consistent-return
   const buildscriptFile: IBuildScript = (() => {
     try {
-      // todo: wrap dynamic loader into a function
+      // todo(#136): wrap dynamic loader into a function
       // eslint-disable-next-line global-require, import/no-dynamic-require
       return require(path.join(process.cwd(), 'buildscript.js'));
     } catch (error) {

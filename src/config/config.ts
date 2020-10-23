@@ -4,13 +4,13 @@ import { parseYamlOrJson, stringyfyJsonOrYaml } from '../util/yaml';
 const REGEX_JSON_OR_YAML_EXTENSION = /\.(?:json|ya?ml)$/;
 const REGEX_VALID_KEY = /^[a-zA-Z]+(?:\.[a-zA-Z]+)*$/;
 
-// todo: write write-only and read-only versions of config
+// todo(#137): write write-only and read-only versions of config
 export class Config {
     filePath: string;
 
     readOnly: boolean;
 
-    // todo: create better interface for config trees
+    // todo(#138): create better interface for config trees
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
 
