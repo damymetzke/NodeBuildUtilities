@@ -53,7 +53,6 @@ export class ConfigVariable<T extends ConfigType> {
 }
 
 function fillConfig(source: ConfigObject, target: ConfigObject) {
-  // todo: create type instead of any to use in config key access
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Object.entries(source).forEach(([key, value]: [string, any]) => {
     if (typeof value === 'undefined') {

@@ -9,7 +9,7 @@ if (!process.send) {
 
 process.once('message', async (data: { scriptPath: string; args: unknown[]; }) => {
   const { scriptPath, args } = data;
-  // todo: wrap dynamic import in function
+  // todo(#136): wrap dynamic import in function
   // eslint-disable-next-line max-len
   // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
   const script = require(scriptPath);
