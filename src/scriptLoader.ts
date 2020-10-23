@@ -26,7 +26,7 @@ export async function runScriptSync(scriptPath: string, ...args: unknown[]): Pro
   let result: void | SubProcessError;
   try {
     result = await (async () => {
-      // todo: wrap dynamic import in function
+      // todo(#136): wrap dynamic import in function
       // eslint-disable-next-line max-len
       // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
       const { scriptMain } = require(filePath);
@@ -184,7 +184,7 @@ export function runBin(
 }
 
 export async function runBuildScript(script: string): Promise<unknown> {
-  // todo: wrap dynamic import in function
+  // todo(#136): wrap dynamic import in function
   // eslint-disable-next-line max-len
   // eslint-disable-next-line global-require, import/no-dynamic-require, @typescript-eslint/no-var-requires
   const buildscriptfile = require(path.join(process.cwd(), 'buildscript.config.js'));
