@@ -1,4 +1,5 @@
 [![ESLint](https://github.com/damymetzke/node-build-util/workflows/ESLint/badge.svg)](https://github.com/damymetzke/node-build-util/actions?query=workflow%3AESLint)
+[![Build](https://github.com/damymetzke/node-build-util/workflows/Build/badge.svg)](https://github.com/damymetzke/node-build-util/actions?query=workflow%3ABuild)
 
 # Node-Build-Util
 node-build-util is a package containing useful utilities to simplify custom build scripts.
