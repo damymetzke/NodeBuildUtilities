@@ -45,7 +45,7 @@ export class Config {
       return _.get(this.data, key);
     }
 
-    set<T>(key: string, value: T): void{
+    set<T>(key: string, value: T): void {
       if (!REGEX_VALID_KEY.test(key)) {
         throw new Error(`invalid key '${key}'`);
       }

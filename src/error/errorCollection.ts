@@ -38,7 +38,7 @@ export class ErrorCollection extends BuildError {
       this.message = error.message;
     }
 
-    append(errors: Error[]): void{
+    append(errors: Error[]): void {
       if (errors.length === 0) {
         return;
       }
