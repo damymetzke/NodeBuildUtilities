@@ -46,7 +46,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.164",
     "lodash": "^4.17.20",
-    "marked": "^1.2.2",
+    "marked": "^1.2.3",
     "sass": "^1.28.0",
     "yaml": "^1.10.0"
   }
