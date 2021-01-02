@@ -31,7 +31,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.19",
     "@types/marked": "^1.2.1",
-    "@types/node": "^14.14.16",
+    "@types/node": "^14.14.19",
     "@types/sass": "^1.16.0",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.1",
